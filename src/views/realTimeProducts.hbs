@@ -1,0 +1,33 @@
+<main>
+    <h2>Productos con websocket</h2>
+    <h3>Agregar producto</h3>
+    <form action="" id="formulario">
+        <label for="name">Ingrese el nombre del producto</label>
+        <input type="text" name="name" id="name" required>
+        <label for="description">Ingrese una descripción del producto</label>
+        <input type="text" name="description" id="description" required>
+        <label for="price">Ingrese el precio</label>
+        <input type="number" name="price" id="price" required>
+        <label for="thumbnail">Ingrese una imagen del producto (link)</label>
+        <input type="text" name="thumbnail" id="thumbnail" required>
+        <label for="code">Ingrese el código del producto</label>
+        <input type="text" name="code" id="code" required>
+        <label for="stock">Ingrese el stock del producto</label>
+        <input type="number" name="stock" id="stock" required>
+        <input type="submit">
+    </form>
+    <div id="products">
+        {{!-- lista productos --}}
+    </div>
+    {{#if hasPrevPage}}
+        <a href="/realtimeproducts?newPage={{prevPage}}">Anterior</a>
+    {{/if}}
+        <p>{{page}}</p>
+    {{#if hasNextPage}}
+        <a href="/realtimeproducts?newPage={{nextPage}}">Siguiente</a>
+    {{/if}}
+</main>
+{{!-- Script para extraer del node modules --}}
+<script src="/socket.io/socket.io.js"></script>
+{{!-- Script para traer el archivo de mi js --}}
+<script src="/js/realTimeProducts.js"></script>

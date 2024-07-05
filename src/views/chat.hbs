@@ -1,0 +1,24 @@
+<!-- Chat Handlebars -->
+<main>
+    <div id="contenedor_chat">
+        {{#if messagesExiste}}
+            <div class="container_products">
+                {{#each messages}}
+                    <div class="card_product">
+                        <p>User:{{this.user}}</p>
+                        <p>Message:{{this.message}}</p>
+                    </div>
+                {{/each}}
+            </div>
+        {{else}}
+            <h2>No hay mensajes</h2>
+        {{/if}}
+    </div>
+    <form id="formulario-chat">
+        <input type="text" name="user" placeholder="Ingrese su correo" id="user">
+        <input type="text" name="mensaje" placeholder="Escribe tu mensaje" id="message">
+        <input type="submit" Enviar>
+    </form>
+</main>
+<script src="/socket.io/socket.io.js"></script>
+<script src="./js/chat.js"></script>

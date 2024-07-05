@@ -1,0 +1,25 @@
+
+    <h1>Products</h1>
+    <div class="container">
+        {{#if productsExist}}
+            <div class="container_products">
+                {{#each products}}
+                    <div class="card_product">
+                        <p class="product_name">{{this.title}}</p>
+                        <p class="product_price">${{this.price}}</p>
+                        <button class="button_add_product" id="{{this._id}}">Agregar al carrito</button>
+                    </div>
+                {{/each}}
+            </div>
+            {{#if hasPrevPage}}
+                <a href="/products?newPage={{prevPage}}">Anterior</a>
+            {{/if}}
+            <p>{{page}}</p>
+            {{#if hasNextPage}}
+                <a href="/products?newPage={{nextPage}}">Siguiente</a>
+            {{/if}}
+        {{else}}
+            <h2>No hay productos</h2>
+        {{/if}}
+    </div>
+<script src="/js/carts.js"></script>

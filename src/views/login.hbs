@@ -1,0 +1,22 @@
+<main class="main_login">
+    {{!-- <h1>Login</h1> --}}
+    <div class="section_form">
+        <div class="content">
+            <form id="formulario">
+                <label class="labelBox" for="email">Email</label>
+                <input class="inputBox" type="email" id="email" name="email" required>
+                <label class="labelBox" for="password">Contraseña</label>
+                <input class="inputBox" type="password" id="password" name="password" required>
+                <input class="submitButton" type="submit" value="Enviar">
+                <div id="response"></div>
+            </form>
+        </div>
+    </div>
+    <div class="btn-github">
+        <a href="/api/sessions/github">Github</a>
+    </div>
+    <div class="section_register_here">
+        <h3 class="section_register_here_text">¿No estás registrado? Registrate <a href="/register">AQUÍ</a></h3>
+    </div>
+</main>
+<script src="/js/login.js"></script>
