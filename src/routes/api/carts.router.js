@@ -26,6 +26,6 @@ router.put('/:cid/product/:pid',updateQuantity)
 router.delete('/:cid',deleteProducts)
 
 //Proceso de compra
-router.get('/:cid/purchase',endPurchase)
+router.post('/:cid/purchase',endPurchase)
 
 module.exports = router

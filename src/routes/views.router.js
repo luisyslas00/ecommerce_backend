@@ -106,6 +106,7 @@ router.get('/carts/:cid',async(req,res)=>{
         styles:'styles.css',
         cartID:req.session?.user?.cartID||cartDB,
         user:req.session?.user?.first_name||userDb,
+        productsExist:products.length>0
     })
 })
 

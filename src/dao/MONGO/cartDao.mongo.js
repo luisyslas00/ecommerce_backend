@@ -1,4 +1,5 @@
-const { cartsModel } = require('./models/carts.model.js')
+const { cartsModel } = require('./models/carts.model.js');
+const ticketModel = require('./models/ticket.model.js');
 
 class CartDaoMongo{
     constructor(){
@@ -98,30 +99,28 @@ class CartDaoMongo{
             //RESOLVER ESTO
             let totalAmount = 0;
             const productsToPurchase = [];
-
+            const productsNotPurchase = []
             for (const item of cart.products) {
                 const product = item.product;
                 console.log(product)
                 if(product.stock>=item.quantity){
-                    item.product.stock -= item.quantity
+                    product.stock -= item.quantity
+                    await product.save()
                     console.log("Se puede comprar")
-                    //Actualizar el stock en mongodb
-                    // const product = item._id;
-                // if (product.stock >= item.quantity) {
-                //     product.stock -= item.quantity;
-                //     await product.save();
-
-                //     totalAmount += product.price * item.quantity;
-                //     productsToPurchase.push({
-                //     productId: product._id,
-                //     quantity: item.quantity,
-                //     price: product.price
-                //     });
-                // }
+                    totalAmount += item.quantity * product.price;
+                    productsToPurchase.push(product);
+                }else{
+                    console.log("No se puede comprar")
+                    productsNotPurchase.push(product)
                 }
-                
             }
-            return cart
+            await this.cartsModel.updateOne({ _id: cid }, { $set: { products: productsNotPurchase } })
+            if(productsToPurchase.length !=0){
+                // const newTicket = await ticketModel.create({amount:totalAmount})
+                // return newTicket
+                const result = totalAmount
+                return result
+            }
         } catch (error) {
             console.log(error)
         }
@@ -130,7 +129,8 @@ class CartDaoMongo{
 
 module.exports = CartDaoMongo
 
-// const product = item._id;
+//Actualizar el stock en mongodb
+                    // const product = item._id;
                 // if (product.stock >= item.quantity) {
                 //     product.stock -= item.quantity;
                 //     await product.save();

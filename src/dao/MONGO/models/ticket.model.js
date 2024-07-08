@@ -18,9 +18,9 @@ const ticketSchema = new Schema({
     },
     purchaser: {
         type: String,
-        required: true
-    }
+    },
 });
+
 
 const ticketModel = model('Ticket', ticketSchema);
   

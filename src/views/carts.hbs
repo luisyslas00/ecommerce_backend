@@ -7,4 +7,8 @@
             <p>Cantidad:{{this.quantity}}</p>
         </div>
     {{/each}}
+    {{#if productsExist}}
+        <button id="btn_purchase" data-id="{{cartID}}">Comprar</button>
+    {{/if}}
 </div>
+<script src="/js/purchase.js"></script>

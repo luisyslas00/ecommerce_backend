@@ -1,5 +1,8 @@
-const { cartService } = require("../service/index.js")
-
+const { cartService, ticketService } = require("../service/index.js")
+const jwt = require('jsonwebtoken')
+const { objectConfig } = require('../config/config.js')
+const { UserDtoDB } = require('../dtos/userDB.dto.js')
+const {private_key} = objectConfig
 
 class cartController {
     constructor(){
@@ -85,8 +88,20 @@ class cartController {
     endPurchase = async(req,res)=>{
         try {
             const {cid} = req.params
+            let userDb
+            if(req.cookies["token"]){
+                const userCookie = jwt.verify(req.cookies["token"], private_key)
+                const userFound = new UserDtoDB(userCookie)
+                userDb = userFound.email
+            }
+            let userEmail = userDb || req.session?.user?.email
+            console.log(userEmail)
             const result = await this.cartService.endPurchase(cid)
-            res.send({status:"success",payload:result})
+            let newTicket 
+            if(result>0){
+                newTicket = await ticketService.createTicket({amount:result,purchaser:userEmail})
+            }
+            res.send({status:"success",payload:newTicket})
         } catch (error) {
             console.log(error)
         }
