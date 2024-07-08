@@ -2,7 +2,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const purchaseButton = document.getElementById('btn_purchase')
     if(purchaseButton){
         const cartID = purchaseButton.getAttribute('data-id')
-
         purchaseButton.addEventListener('click', async () => {
             try {
                 const response = await fetch(`/api/carts/${cartID}/purchase`, {
@@ -15,8 +14,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (contentType && contentType.indexOf("application/json") !== -1) {
                     const result = await response.json();
                     if (response.ok) {
-                        console.log('Compra completada con éxito:', result);
-                        alert('Compra completada con éxito');
+                        alert('Compra completada con éxito')
+                        setTimeout(() => {
+                            window.location.href = '/products';
+                        }, 1000);
                     } else {
                         console.error('Error al completar la compra:', result);
                         alert('Error al completar la compra');
