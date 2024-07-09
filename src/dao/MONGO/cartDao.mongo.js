@@ -1,5 +1,5 @@
 const { cartsModel } = require('./models/carts.model.js');
-const ticketModel = require('./models/ticket.model.js');
+const { productsModel } = require('./models/products.model.js');
 
 class CartDaoMongo{
     constructor(){
@@ -19,8 +19,14 @@ class CartDaoMongo{
     }
     async addProduct(cid,pid){
         try{
+            const product = await productsModel.findOne({"_id": pid});
+            // if (!product) {
+            //     return {status: 'failed', payload: "Producto no encontrado"};
+            // }
+            // if (product.stock <= 0) {
+            //     return {status: 'failed', payload: "Producto sin stock"};
+            // }
             const searchCart = await this.cartsModel.findOne({"_id":cid})
-            //Queda verificar si el producto existe en la base de datos
             let productExist=false
             if(searchCart){
                 for(const cartProduct of searchCart.products){
@@ -102,18 +108,17 @@ class CartDaoMongo{
             const productsNotPurchase = []
             for (const item of cart.products) {
                 const product = item.product;
-                console.log(product)
                 if(product.stock>=item.quantity){
                     product.stock -= item.quantity
-                    await product.save()
-                    console.log("Se puede comprar")
                     totalAmount += item.quantity * product.price;
                     productsToPurchase.push(product);
+                    product.save()
                 }else{
-                    console.log("No se puede comprar")
-                    productsNotPurchase.push(product)
+                    productsNotPurchase.push({product:product._id,quantity:item.quantity})
                 }
             }
+            console.log("Productos comprados:",productsToPurchase)
+            console.log("Productos no comprados",productsNotPurchase)
             await this.cartsModel.updateOne({ _id: cid }, { $set: { products: productsNotPurchase } })
             if(productsToPurchase.length !=0){
                 // const newTicket = await ticketModel.create({amount:totalAmount})

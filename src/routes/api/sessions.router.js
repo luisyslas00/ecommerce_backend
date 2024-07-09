@@ -18,6 +18,7 @@ router.get('/github',passport.authenticate('github',{scope:['user:email']}),asyn
 
 router.get('/githubcallback',passport.authenticate('github',{failureRedirect:'/login'}),async(req,res)=>{
     req.session.user = req.user
+    console.log(req.session)
     res.redirect('/products')
 })
 

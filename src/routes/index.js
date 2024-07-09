@@ -5,6 +5,7 @@ const productsRouter = require('./api/products.router.js')
 const cartsRouter = require('./api/carts.router.js')
 const chatRouter = require('./api/chat.router.js')
 const sessionsRouter = require('./api/sessions.router.js')
+const mockingRouter = require('./api/mocking.router.js')
 
 const router = Router()
 
@@ -13,6 +14,7 @@ router.use('/api/products',productsRouter)
 router.use('/api/carts',cartsRouter)
 router.use('/api/chat',chatRouter)
 router.use('/api/sessions',sessionsRouter)
+router.use('/api/mocking',mockingRouter)
 
 //Escuchamos el servidor
 router.use((error,req,res,next)=>{

@@ -16,13 +16,13 @@ const initializePassportGithub = () => {
         callbackURL:'http://localhost:'+port+'/api/sessions/githubcallback'
     },async(accessToken,refreshToken,profile,done)=>{
         try {
-            // console.log(profile)
             let user = await userManager.getUser({email:profile._json.email})
             if(!user){
                 const newCart = {
                     "products":[]
                 }
                 const cart = await cartManager.addCart(newCart)
+                console.log(profile._json)
                 let newUser = {
                     first_name:profile._json.name,
                     last_name:'',

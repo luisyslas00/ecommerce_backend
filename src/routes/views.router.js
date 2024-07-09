@@ -159,5 +159,9 @@ router.get('/realtimeproducts',auth(["admin"]),async(req,res)=>{
     }
 })
 
+router.get('/mockingproducts',async(req,res)=>{
+    
+})
+
 
 module.exports = router

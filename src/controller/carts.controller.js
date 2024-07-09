@@ -2,6 +2,7 @@ const { cartService, ticketService } = require("../service/index.js")
 const jwt = require('jsonwebtoken')
 const { objectConfig } = require('../config/config.js')
 const { UserDtoDB } = require('../dtos/userDB.dto.js')
+const crypto = require('crypto')
 const {private_key} = objectConfig
 
 class cartController {
@@ -95,11 +96,10 @@ class cartController {
                 userDb = userFound.email
             }
             let userEmail = userDb || req.session?.user?.email
-            console.log(userEmail)
             const result = await this.cartService.endPurchase(cid)
             let newTicket 
             if(result>0){
-                newTicket = await ticketService.createTicket({amount:result,purchaser:userEmail})
+                newTicket = await ticketService.createTicket({amount:result,purchaser:userEmail,code:crypto.randomUUID()})
             }
             res.send({status:"success",payload:newTicket})
         } catch (error) {
