@@ -122,6 +122,24 @@
     outline: none;
 }
 
+.button_stock{
+    display: inline-block;
+    height: 50px;
+    width: 176px;
+    margin: 0 40px 0 16px;
+    box-sizing: border-box;
+    border: transparent;
+    border-radius: 60px;
+    font-family: 'Raleway', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: #cacaca;
+    background-color: #8e8e8e;
+    cursor: pointer;
+    outline: none;
+}
 .button_add_product:hover{
     background-color: #000;
 }

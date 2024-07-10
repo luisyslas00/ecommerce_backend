@@ -14,7 +14,7 @@ router.use('/api/products',productsRouter)
 router.use('/api/carts',cartsRouter)
 router.use('/api/chat',chatRouter)
 router.use('/api/sessions',sessionsRouter)
-router.use('/api/mocking',mockingRouter)
+router.use('/api/mockingproducts',mockingRouter)
 
 //Escuchamos el servidor
 router.use((error,req,res,next)=>{

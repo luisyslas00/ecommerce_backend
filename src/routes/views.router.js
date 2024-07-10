@@ -89,7 +89,7 @@ router.get("/products",async(req,res)=>{
     })
 })
 
-router.get('/carts/:cid',async(req,res)=>{
+router.get('/carts/:cid',auth(["user"]),async(req,res)=>{
     const {cid}=req.params
     const cart = await cartManager.getCart(cid)
     const products = cart.products
@@ -159,9 +159,7 @@ router.get('/realtimeproducts',auth(["admin"]),async(req,res)=>{
     }
 })
 
-router.get('/mockingproducts',async(req,res)=>{
-    
-})
+
 
 
 module.exports = router

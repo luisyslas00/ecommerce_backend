@@ -1,3 +1,6 @@
+const CustomError = require('../../service/errors/CustomError.js');
+const EErrors = require('../../service/errors/enum.js');
+const generateProductError = require('../../service/errors/info.js');
 const { productsModel } = require('./models/products.model.js')
 const { mongoose } = require('mongoose')
 
@@ -27,6 +30,13 @@ class ProductDaoMongo{
         const {title,description,price,thumbnail,code,stock} = objeto
         // objeto.status = true
         if(title===""||description===""||price===0||thumbnail===""||code===""||stock===0){
+            console.log("ERROR --")
+            CustomError.createError({
+                name:"Error al crear el producto",
+                cause: generateProductError({title,description,price,thumbnail,code,stock}),
+                message:"Error al crear el producto. Rellene los campos correctamente",
+                code: EErrors.INVALID_TYPES_ERROR
+            })
             return {status:'failed', payload:"Rellenar correctamente los campos"}
         }
         let repite = products.some(elemento=>{

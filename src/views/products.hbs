@@ -7,7 +7,11 @@
                     <div class="card_product">
                         <p class="product_name">{{this.title}}</p>
                         <p class="product_price">${{this.price}}</p>
+                        {{#if this.stock}}
                         <button class="button_add_product" id="{{this._id}}">Agregar al carrito</button>
+                        {{else}}
+                        <button class="button_stock" disabled>Sin stock</button>
+                        {{/if}}
                     </div>
                 {{/each}}
             </div>
