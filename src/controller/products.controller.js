@@ -1,3 +1,6 @@
+const CustomError = require("../service/errors/CustomError.js")
+const EErrors = require("../service/errors/enum.js")
+const generateProductError = require("../service/errors/info.js")
 const { productService } = require("../service/index.js")
 
 class productController {
@@ -28,6 +31,23 @@ class productController {
     addProduct = async (req,res)=>{
         try{
             const result = await this.productService.addProduct(req.body)
+            const {title,description,price,thumbnail,code,stock,category} = req.body
+            if(title===""||description===""||Number(price)<=0||thumbnail===""||code===""||Number(stock)<=0||category===''){
+                CustomError.createError({
+                    name:"Error al crear el producto",
+                    cause: generateProductError({title,description,price,thumbnail,code,stock,category}),
+                    message:"Error al crear el producto. Rellene los campos correctamente",
+                    code: EErrors.INVALID_TYPES_ERROR
+                })
+                // console.log("ERROR --")
+                // CustomError.createError({
+                //     name:"Error al crear el producto",
+                //     cause: generateProductError({title,description,price,thumbnail,code,stock}),
+                //     message:"Error al crear el producto. Rellene los campos correctamente",
+                //     code: EErrors.INVALID_TYPES_ERROR
+                // })
+                return {status:'failed', payload:"Rellenar correctamente los campos"}
+            }
             if(result.status === 'failed')return res.send(result)
             res.send({status:"success",payload:result})
         }
