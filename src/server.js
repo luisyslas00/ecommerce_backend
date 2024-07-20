@@ -12,7 +12,6 @@ const { initializePassportGithub } = require('./config/passportgithub.config.js'
 const { Server } = require('socket.io')
 const { objectConfig } = require('./config/config.js')
 const { productSocket } = require('./utils/productSocket.js')
-
 const {port,session_secret,mongo_url} = objectConfig
 
 const app = express()

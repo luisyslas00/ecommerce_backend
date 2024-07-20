@@ -24,7 +24,6 @@ function enviarFormulario(){
         stock:stockProduct.value,
         category:categoryProduct.value
     }
-
     fetch('/api/products', {
         method: 'POST',
         headers: {
@@ -40,21 +39,20 @@ function enviarFormulario(){
     })
     .then(data => {
         console.log('Producto agregado:', data);
-        // Aquí puedes actualizar la interfaz de usuario o realizar otras acciones con la respuesta
+        socket.emit('addProducts',{newProduct})
     })
     .catch(error => {
         console.error('Error:', error);
-    });
-    socket.emit('addProduct',{newProduct})
-    socket.on('listaProductosActualizada', products => {
-        // Aquí puedes actualizar la interfaz de usuario con la nueva lista de productos
-        actualizarListaProductos(products);
     });
 }
 
 formProduct.addEventListener('submit',(e)=>{
     e.preventDefault()
     enviarFormulario()
+    socket.on("listaProductosActualizada", data =>{
+        const productsDB = data.docs
+        actualizarListaProductos(productsDB)
+    })
     formProduct.reset()
 })
 
@@ -89,9 +87,32 @@ function actualizarListaProductos(productsDB){
                 containerProduct.classList.add('product_admin')
                 containerProduct.innerHTML =`
                 <p>${element.title}</p>
-                <p>${element.price}</p>
+                <p>$${element.price}</p>
                 <button id=${element.id}>Eliminar</button>`
                 productsContainer.append(containerProduct)
                 const buttonEliminar = document.getElementById(`${element.id}`)
+                buttonEliminar.classList.add('btn_eliminar')
+                buttonEliminar.addEventListener('click',async()=>{
+                    console.log(`Eliminar ${element.id}`)
+                    try {
+                        const response = await fetch(`/api/products/${element.id}`, {
+                            method: 'DELETE',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        })
+                        
+                        if(response.ok) {
+                            const result = await response.json()
+                            console.log('Producto eliminado:', result)
+                            // Elimina el producto de la lista
+                            actualizarListaProductos(productsDB.filter(product => product.id !== element.id))
+                        } else {
+                            console.error('Error al eliminar el producto')
+                        }
+                    } catch (error) {
+                        console.error('Error en la petición:', error)
+                    }
+                })
     })
 }
