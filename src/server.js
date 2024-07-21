@@ -12,6 +12,7 @@ const { initializePassportGithub } = require('./config/passportgithub.config.js'
 const { Server } = require('socket.io')
 const { objectConfig } = require('./config/config.js')
 const { productSocket } = require('./utils/productSocket.js')
+const { addLogger } = require('./middleware/logger.middleware.js')
 const {port,session_secret,mongo_url} = objectConfig
 
 const app = express()
@@ -27,8 +28,7 @@ app.use(cookieParser())
 //     resave:true,
 //     saveUninitialized:true
 // }))
-
-
+app.use(addLogger)
 //Session con MONGODB
 app.use(session({
     store:MongoStore.create({

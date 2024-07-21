@@ -12,7 +12,7 @@ router.get('/',async(req,res)=>{
         }
         res.send({status:"success",payload:products})
    } catch (error) {
-        console.log(error)
+        req.logger.error('No se pudo generar los productos con mocking')
    }
 })
 

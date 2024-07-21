@@ -29,7 +29,7 @@ class cartController {
             res.send({status:"success",payload:cart})
         }
         catch(error){
-            console.log(error)
+            req.logger.error('Error al obtener el carrito')
         }
     }
     addProduct = async(req,res)=>{
@@ -51,7 +51,7 @@ class cartController {
             res.send({status:"success",payload:result})
         }
         catch(error){
-            console.log(error)
+            req.logger.error('No se pudo eliminar el producto o no existe')
         }
     }
     updateCart = async(req,res)=>{

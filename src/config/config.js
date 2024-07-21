@@ -9,7 +9,8 @@ const objectConfig = {
     session_secret:process.env.SESSION_SECRET,
     client_id:process.env.CLIENT_ID,
     client_secret:process.env.CLIENT_SECRET,
-    persistence:process.env.PERSISTENCE
+    persistence:process.env.PERSISTENCE,
+    node_env:process.env.NODE_ENV
 }
 
 module.exports = {
