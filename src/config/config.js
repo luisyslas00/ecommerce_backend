@@ -10,7 +10,9 @@ const objectConfig = {
     client_id:process.env.CLIENT_ID,
     client_secret:process.env.CLIENT_SECRET,
     persistence:process.env.PERSISTENCE,
-    node_env:process.env.NODE_ENV
+    node_env:process.env.NODE_ENV,
+    gmail_pass:process.env.GMAIL_PASS,
+    gmail_user:process.env.GMAIL_USER
 }
 
 module.exports = {

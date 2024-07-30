@@ -56,7 +56,6 @@ app.use(routerApp)
 
 connectDB()
 
-
 //Configuración Socket
 const httpServer = app.listen(port,error=>{
     if(error) return console.log(error)

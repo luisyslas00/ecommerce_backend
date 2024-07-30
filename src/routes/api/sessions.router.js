@@ -5,7 +5,7 @@ const { passportCall } = require('../../middleware/passportCall.middleware.js')
 const { userController } = require('../../controller/users.controller.js')
 
 const router = Router()
-const {register,login,logout,current} = new userController
+const {register,login,logout,current,resetPassword} = new userController
 
 //Register
 router.post('/register',register)
@@ -31,6 +31,8 @@ router.get('/logout',logout)
 
 //Current
 router.get('/current',passportCall('jwt'),auth(['admin', 'user']),current)
+
+router.post('/resetpassword',resetPassword)
 
 module.exports = router
 

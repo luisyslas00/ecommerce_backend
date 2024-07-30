@@ -159,7 +159,35 @@ router.get('/realtimeproducts',auth(["admin"]),async(req,res)=>{
     }
 })
 
+router.get('/resetpassword',async(req,res)=>{
+    res.render('resetPassword',{
+        styles:'styles.css'
+    })
+})
 
+router.get('/resetpassword/:token', async (req, res) => {
+    try {
+        const { token } = req.params;
+        const decoded = jwt.verify(token, private_key);
+        
+        if (!decoded) {
+            return res.redirect('/expired');
+        }
 
+        res.render('resetPasswordForm', { 
+            token,
+            styles:'styles.css'
+        });
+    } catch (error) {
+        console.log(error);
+        res.redirect('/expired');
+    }
+});
+
+router.get('/expired', async (req, res) => {
+    res.render('expired',{
+        styles:'styles.css'
+    })
+});
 
 module.exports = router

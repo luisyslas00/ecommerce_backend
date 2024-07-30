@@ -6,21 +6,16 @@ class ProductDaoMongo{
         this.productsModel = productsModel;
     }
     async getProducts({ limit = 9, newPage = 1, ord = 1 } = {}) {
-        try {
-            const products = await this.productsModel.paginate(
-                {},
-                {
-                    limit,
-                    page: newPage,
-                    sort: { price: Number(ord) },
-                    lean: true
-                }
-            );
-            return products;
-        } catch (error) {
-            console.error('Error obteniendo productos:', error);
-            throw error;
-        }
+        const products = await this.productsModel.paginate(
+            {},
+            {
+                limit,
+                page: newPage,
+                sort: { price: Number(ord) },
+                lean: true
+            }
+        );
+        return products;
     }
     async addProduct(objeto){
         const products = await this.productsModel.find()
@@ -46,22 +41,12 @@ class ProductDaoMongo{
         return await this.productsModel.updateOne({_id:id},objeto)
     }
     async deleteProduct(id){
-        try{
-            const result = await this.productsModel.deleteOne({_id:id})
-            return result
-        }
-        catch(error){
-            return {status:'failed', payload:"Producto no encontrado"}
-        }
+        const result = await this.productsModel.deleteOne({_id:id})
+        return result
     }
     async getProductById(id){
-        try{
-            const result = await this.productsModel.find({_id:id})
-            return result
-        }
-        catch(error){
-            return {status:'failed', payload:"Producto no encontrado"}
-        }
+        const result = await this.productsModel.find({_id:id})
+        return result
     }
 }
 

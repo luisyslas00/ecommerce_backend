@@ -3,8 +3,9 @@ const { UserDtoDB } = require("../dtos/userDB.dto.js")
 const { userService, cartService } = require("../service/index.js")
 const { createHash, isValidPassword } = require("../utils/bcrypt.js")
 const { generateToken } = require("../utils/jwt.js")
-const {private_key} = objectConfig
+const {private_key,port} = objectConfig
 const jwt = require('jsonwebtoken');
+const { sendEmail } = require("../utils/sendMail.js")
 
 class userController {
     constructor(){
@@ -76,6 +77,21 @@ class userController {
         const userFound = await this.userService.getUser({email})
         const user = new UserDtoDB(userFound)
         res.send({status:'success',payload:user})
+    }
+    resetPassword = async(req,res)=>{
+        try{
+            const {email} = req.body
+            const userFound = await this.userService.getUser({email})
+            if(!userFound) return res.send({status:'failed',payload:'User not found'})
+            console.log(userFound)
+            const token = jwt.sign({ id: userFound._id }, private_key, { expiresIn: '1h' });
+            const resetLink = `http://${req.headers.host}/resetpassword/${token}`;
+            const html = `<h1>Resetea tu contraseña <a href='${resetLink}'>AQUÍ</a></h1>`
+            sendEmail({userMail:userFound.email,subject:`Reseteo password ${userFound.first_name}`,html})
+            res.send({status:"success",payload:userFound.email})
+        }catch(error){
+            console.log(error)
+        }
     }
 }
 
