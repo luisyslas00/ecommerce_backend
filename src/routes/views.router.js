@@ -138,7 +138,7 @@ router.get('/register',async(req,res)=>{
     })
 })
 
-router.get('/realtimeproducts',auth(["admin"]),async(req,res)=>{
+router.get('/realtimeproducts',auth(["admin","premium"]),async(req,res)=>{
     try{
         let userDb
         let cartDB

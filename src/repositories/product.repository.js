@@ -16,6 +16,13 @@ class ProductRepository{
             return {status:'failed', payload:"No se pudo agregar el producto"}
         }
     }
+    async getProductFilter(filter){
+        try {
+            return await this.dao.getProductFilter(filter)
+        } catch (error) {
+            return {status:'failed', payload:"No se encontró el producto"}
+        }
+    }
     async updateProduct(id,objeto){
         try {
             return await this.dao.updateProduct(id,objeto)

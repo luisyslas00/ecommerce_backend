@@ -1,6 +1,7 @@
 const { Router } = require('express')
 const { productController } = require('../../controller/products.controller.js')
 const { auth } = require('../../middleware/auth.middleware.js')
+const { checkAuth } = require('../../middleware/checkAuthtoken.middleware.js')
 
 const router = Router()
 
@@ -11,7 +12,7 @@ router.get('/',getProducts)
 // //Ver producto por ID
 router.get('/:pid',getProductbyId)
 //Agregar producto -- VERIFICAR
-router.post('/',addProduct)
+router.post('/',checkAuth,addProduct)
 // //Modificar producto
 router.put('/:pid',updateProduct)
 // //Eliminar producto

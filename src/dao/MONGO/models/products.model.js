@@ -20,7 +20,7 @@ const productsSchema = new Schema({
     },
     stock:Number,
     owner: {
-        type: Schema.Types.ObjectId, //Veo si lo modifico a string
+        type: String,
         ref: 'users',
         default: 'admin'
     }

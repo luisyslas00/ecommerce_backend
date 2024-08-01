@@ -18,26 +18,12 @@ class ProductDaoMongo{
         return products;
     }
     async addProduct(objeto){
-        const products = await this.productsModel.find()
-        const {title,description,price,thumbnail,code,stock,category} = objeto
-        if(title===""||description===""||Number(price)===0||thumbnail===""||code===""||Number(stock)===0||category===''){
-            return {status:'failed', payload:"Rellenar correctamente los campos"}
-        }
-        let repite = products.some(elemento=>{
-            return elemento.code === code
-        })
-        if(repite){
-            return {status:'failed', payload: "Código repetido"}
-        }else{
-            return await this.productsModel.create(objeto)
-        }
+        return await this.productsModel.create(objeto)  
+    }
+    async getProductFilter(filter){
+        return await this.productsModel.findOne(filter)
     }
     async updateProduct(id,objeto){
-        const {title,description,price,thumbnail,code,stock} = objeto
-        const products = await this.productsModel.find()
-        if(!title, !description,!price,!thumbnail,!code,!stock){
-            return {status:'failed',payload:'Faltan campos'}
-        }
         return await this.productsModel.updateOne({_id:id},objeto)
     }
     async deleteProduct(id){

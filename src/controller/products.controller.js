@@ -2,6 +2,8 @@ const CustomError = require("../service/errors/CustomError.js")
 const EErrors = require("../service/errors/enum.js")
 const generateProductError = require("../service/errors/info.js")
 const { productService } = require("../service/index.js")
+const { objectConfig } = require("../config/config.js")
+const {private_key} = objectConfig
 
 class productController {
     constructor(){
@@ -29,30 +31,22 @@ class productController {
         }
     }
     addProduct = async (req,res)=>{
-        try{
-            const result = await this.productService.addProduct(req.body)
-            const {title,description,price,thumbnail,code,stock,category} = req.body
-            if(title===""||description===""||Number(price)<=0||thumbnail===""||code===""||Number(stock)<=0||category===''){
-                CustomError.createError({
-                    name:"Error al crear el producto",
-                    cause: generateProductError({title,description,price,thumbnail,code,stock,category}),
-                    message:"Error al crear el producto. Rellene los campos correctamente",
-                    code: EErrors.INVALID_TYPES_ERROR
-                })
-                // console.log("ERROR --")
-                // CustomError.createError({
-                //     name:"Error al crear el producto",
-                //     cause: generateProductError({title,description,price,thumbnail,code,stock}),
-                //     message:"Error al crear el producto. Rellene los campos correctamente",
-                //     code: EErrors.INVALID_TYPES_ERROR
-                // })
-                return {status:'failed', payload:"Rellenar correctamente los campos"}
+        try {
+            const newProduct = req.body
+            const {title,description,price,thumbnail,code,stock,category} = newProduct
+            if(!title||!description||Number(price)<=0||!thumbnail||!code||Number(stock)<=0||!category){
+                res.send({status:"failed",message:"Faltan completar datos"})
             }
-            if(result.status === 'failed')return res.send(result)
-            res.send({status:"success",payload:result})
-        }
-        catch(error){
-            console.log(error)
+            const productFound = await this.productService.getProductFilter({code:code})
+            if(productFound) return res.send({status:"failed",message:"Producto ya existente"})
+            console.log(req.user.role)
+            if(req.user.role ==="premium"){
+                newProduct.owner = req.user.email
+            }
+            await this.productService.addProduct(newProduct)
+            res.send({status:"success",message:newProduct})
+        } catch (error) {
+            req.logger.error("Error al agregar un producto a la BD")
         }
     }
     updateProduct = async(req,res)=>{
