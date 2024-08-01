@@ -175,11 +175,11 @@ router.get('/resetpassword/:token', async (req, res) => {
         }
 
         res.render('resetPasswordForm', { 
-            token,
+            token:token,
             styles:'styles.css'
         });
     } catch (error) {
-        console.log(error);
+        req.logger.error('Token no válido')
         res.redirect('/expired');
     }
 });

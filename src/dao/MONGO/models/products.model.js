@@ -18,10 +18,25 @@ const productsSchema = new Schema({
         type: String,
         unique: true
     },
-    stock:Number
+    stock:Number,
+    owner: {
+        type: Schema.Types.ObjectId, //Veo si lo modifico a string
+        ref: 'users',
+        default: 'admin'
+    }
 })
 
 productsSchema.plugin(moongosePaginate)
+
+productsSchema.pre('save', async function(next) {
+    if (!this.owner) {
+        const adminUser = await model('users').findOne({ email: 'admin' });
+        if (adminUser) {
+            this.owner = adminUser._id; 
+        }
+    }
+    next();
+});
 
 const productsModel = model('products',productsSchema)
 
