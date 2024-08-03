@@ -1,6 +1,5 @@
 const CustomError = require("../service/errors/CustomError.js")
 const EErrors = require("../service/errors/enum.js")
-const generateProductError = require("../service/errors/info.js")
 const { productService } = require("../service/index.js")
 const { objectConfig } = require("../config/config.js")
 const {private_key} = objectConfig
@@ -39,7 +38,6 @@ class productController {
             }
             const productFound = await this.productService.getProductFilter({code:code})
             if(productFound) return res.send({status:"failed",message:"Producto ya existente"})
-            console.log(req.user.role)
             if(req.user.role ==="premium"){
                 newProduct.owner = req.user.email
             }
@@ -64,6 +62,13 @@ class productController {
     deleteProduct = async(req,res)=>{
         try{
             const {pid} = req.params
+            const productFound = await this.productService.getProductFilter({_id:pid})
+            if(req.user.role==="admin"){
+                const result = await this.productService.deleteProduct(pid)
+                if(result.status === 'failed') return res.send(result)
+                return res.send({status:'success',payload:result})
+            }
+            if(productFound.owner !== req.user.email) return res.send({status:"error",message:"Producto no corresponde al usuario"})
             const result = await this.productService.deleteProduct(pid)
             if(result.status === 'failed') return res.send(result)
             res.send({status:'success',payload:result})

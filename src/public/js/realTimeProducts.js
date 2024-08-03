@@ -10,7 +10,7 @@ const stockProduct = document.getElementById('stock')
 const categoryProduct = document.getElementById('category')
 const formProduct = document.getElementById('formulario')
 const productsContainer = document.getElementById('products')
-
+const userEmail = document.getElementById('userEmail').textContent
 
 //Función formulario
 
@@ -56,24 +56,6 @@ formProduct.addEventListener('submit',(e)=>{
     formProduct.reset()
 })
 
-// socket.on("listaProductos", data=>{
-//     const prodDB = data.productsDB
-//     console.log(prodDB)
-//     productsContainer.innerHTML =''
-//     prodDB.forEach(element => {
-//         const containerProduct = document.createElement('div')
-//         containerProduct.classList.add('card_product')
-//         containerProduct.innerHTML =`
-//         <p>${element.title}</p>
-//         <p>${element.price}</p>
-//         <button id=${element.id}>Eliminar</button>`
-//         productsContainer.append(containerProduct)
-//         const buttonEliminar = document.getElementById(`${element.id}`)
-//         buttonEliminar.addEventListener('click',()=>{
-//             socket.emit('productEliminar',{id:`${element.id}`})
-//         })
-//     })
-// });
 
 socket.on("listaProductos", data =>{
     const productsDB = data.docs
@@ -82,9 +64,14 @@ socket.on("listaProductos", data =>{
 
 function actualizarListaProductos(productsDB){
     productsContainer.innerHTML = ''
+    
     productsDB.forEach(element=>{
         const containerProduct = document.createElement('div')
-                containerProduct.classList.add('product_admin')
+                if(element.owner === userEmail){
+                    containerProduct.classList.add('product_user')
+                }else{
+                    containerProduct.classList.add('product_admin')
+                }
                 containerProduct.innerHTML =`
                 <p>${element.title}</p>
                 <p>$${element.price}</p>
@@ -104,9 +91,11 @@ function actualizarListaProductos(productsDB){
                         
                         if(response.ok) {
                             const result = await response.json()
-                            console.log('Producto eliminado:', result)
-                            // Elimina el producto de la lista
-                            actualizarListaProductos(productsDB.filter(product => product.id !== element.id))
+                            if(result.status !== "error"){
+                                console.log('Producto eliminado:', result)
+                                // Elimina el producto de la lista
+                                actualizarListaProductos(productsDB.filter(product => product.id !== element.id))
+                            }
                         } else {
                             console.error('Error al eliminar el producto')
                         }

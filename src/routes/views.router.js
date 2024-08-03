@@ -7,6 +7,7 @@ const jwt = require('jsonwebtoken')
 const { objectConfig } = require('../config/config.js')
 const { UserDtoDB } = require('../dtos/userDB.dto.js')
 const { auth } = require('../middleware/auth.middleware.js')
+const { checkAuth } = require('../middleware/checkAuthtoken.middleware.js')
 const {private_key} = objectConfig
 
 const cartManager = new CartDaoMongo()
@@ -138,20 +139,22 @@ router.get('/register',async(req,res)=>{
     })
 })
 
-router.get('/realtimeproducts',auth(["admin","premium"]),async(req,res)=>{
+router.get('/realtimeproducts',auth(["admin","premium"]),checkAuth,async(req,res)=>{
     try{
         let userDb
         let cartDB
-        if(req.cookies["token"]){
-            const userCookie = jwt.verify(req.cookies["token"], private_key)
-            const userFound = new UserDtoDB(userCookie)
+        let userEmail
+        if(req.user){
+            const userFound = new UserDtoDB(req.user)
             userDb = userFound.fullname
             cartDB = userFound.cartID
+            userEmail = userFound.email
         }
         res.render('realTimeProducts',{
             styles:'styles.css',
             cartID:req.session?.user?.cartID||cartDB,
             user:req.session?.user?.first_name||userDb,
+            userEmail:req.session?.user?.email||userEmail
         })
     }
     catch(error){

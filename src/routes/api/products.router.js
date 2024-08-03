@@ -16,6 +16,6 @@ router.post('/',checkAuth,addProduct)
 // //Modificar producto
 router.put('/:pid',updateProduct)
 // //Eliminar producto
-router.delete('/:pid',deleteProduct)
+router.delete('/:pid',checkAuth,deleteProduct)
 
 module.exports = router
