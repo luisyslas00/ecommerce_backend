@@ -13,10 +13,23 @@ const { Server } = require('socket.io')
 const { objectConfig } = require('./config/config.js')
 const { productSocket } = require('./utils/productSocket.js')
 const { addLogger } = require('./middleware/logger.middleware.js')
+const swaggerJSDoc = require('swagger-jsdoc')
+const swaggerUIExpress = require('swagger-ui-express')
 const {port,session_secret,mongo_url} = objectConfig
+
 
 const app = express()
 
+const swaggerOptions = {
+    definition: {
+        openapi: '3.0.1',
+        info:{
+            title:'Documentación de Ecommerce Yslas',
+            description:'API para documentar - Ecommerce'
+        }
+    },
+    apis: [`${__dirname}/docs/**/*.yaml`]
+}
 //Importante la configuración
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
@@ -39,6 +52,11 @@ app.use(session({
     resave:true,
     saveUninitialized:true
 }))
+
+//swagger
+const specs = swaggerJSDoc(swaggerOptions)
+
+
 //Passport
 initializePassport()
 initializePassportGithub()
@@ -51,6 +69,9 @@ app.engine('hbs',handlebars.engine({
 }))
 app.set('views',__dirname+'/views')
 app.set('view engine','hbs')
+
+//Ruta Documentación Swagger
+app.use('/api/docs',swaggerUIExpress.serve,swaggerUIExpress.setup(specs))
 //RouterApp
 app.use(routerApp)
 

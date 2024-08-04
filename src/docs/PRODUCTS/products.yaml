@@ -1,0 +1,57 @@
+paths:
+  /api/products/:
+    get:
+      summary: Obtiene todos los productos
+      tags:
+        - Products
+      responses:
+        "200":
+          description: Los productos fueron obtenidos correctamente
+        "500":
+          description: Error del servidor
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: Id autogenerado de Mongo
+        title:
+          type: String
+          description: Nombre del producto
+        description:
+          type: String
+          description: Descripción del producto
+        price:
+          type: Number
+          description: Precio del producto
+        thumbnail:
+          type: String
+          description: Imagen del producto
+        status:
+          type: Boolean
+          description: Si está disponible el producto, por defecto true
+        category:
+          type: String
+          description: Categoría del producto
+        code:
+          type: String
+          description: No puede repetirse
+        stock:
+          type: Number
+          description: Stock del producto
+        owner:
+          type: String
+          description: Creador del producto
+      example:
+        _id: ObjectId('8sad8a5d4a845sa4d5a')
+        title: Televisor
+        description: Televisión de 32 pulgadas. Marca Noblex
+        price: 350000
+        thumbnail: https://google.com.ar/
+        status: true
+        category: Tecno
+        code: 214521455214588
+        stock: 100
+        owner: admin

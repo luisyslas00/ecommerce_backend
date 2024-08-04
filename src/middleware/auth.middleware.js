@@ -1,7 +1,7 @@
 const { objectConfig } = require("../config/config.js")
+const {private_key} = objectConfig
 const jwt = require('jsonwebtoken')
 const { UserDtoDB } = require("../dtos/userDB.dto.js")
-const {private_key} = objectConfig
 
 const auth = (roles) =>{
     return async(req,res,next)=>{
