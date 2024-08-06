@@ -1,0 +1,69 @@
+paths:
+  /api/carts/{cid}:
+    get:
+      summary: Obtiene el carrito del usuario
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: id del carrito que deseamos solicitar
+          schema:
+            $type: String
+      responses:
+        "200":
+          description: Carrito encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/Cart'
+        "500":
+          description: Error del servidor
+components:
+  schemas:
+    Cart:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: Id autogenerado de Mongo
+        products:
+          type: array
+          description: array de los productos del carrito
+      example:
+        _id: ObjectId('8sad8a5d4a845sa4d5a')
+        products: [
+                    {
+                      "product": {
+                                    "_id": "663faa209376a71d3f8275a1",
+                                    "title": "Zanahoria",
+                                    "description": "x1kg",
+                                    "price": 700,
+                                    "thumbnail": "https",
+                                    "status": true,
+                                    "category": "verduleria",
+                                    "code": "1234322325",
+                                    "stock": 3,
+                                    "__v": 0
+                                  },
+                      "quantity": 1,
+                      "_id": "66b259e23cb3d61f46a775cd"
+                    },
+                    {
+                      "product": {
+                                    "_id": "663faa009376a71d3f82759b",
+                                    "title": "Papa",
+                                    "description": "x1kg",
+                                    "price": 900,
+                                    "thumbnail": "https",
+                                    "status": true,
+                                    "category": "verduleria",
+                                    "code": "1234322323",
+                                    "stock": 18,
+                                    "__v": 0
+                                  },
+                      "quantity": 1,
+                      "_id": "66b259e43cb3d61f46a775d4"
+                    }
+                  ]

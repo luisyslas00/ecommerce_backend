@@ -7,6 +7,86 @@ paths:
       responses:
         "200":
           description: Los productos fueron obtenidos correctamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schemas/Product'
+        "500":
+          description: Error del servidor
+  /api/products:
+    post:
+      summary: Crea un nuevo producto
+      tags:
+        - Products
+      requestBody: 
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#components/requestBodies/createProduct'
+      responses:
+        "201":
+          description: El producto fue creado exitosamente
+  /api/products/{pid}:
+    get:
+      summary: Obtiene un producto por su id
+      tags:
+        - Products
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: id del producto que deseamos solicitar
+          schema:
+            $type: String
+      responses:
+        "200":
+          description: Producto encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/Product'
+        "500":
+          description: Error del servidor
+    put:
+      summary: Actualizar el producto partir de su id
+      tags:
+        - Products
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: id del producto que deseamos solicitar
+          schema:
+            $type: String
+      requestBody: 
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: '#components/requestBodies/updateProduct'
+      responses:
+        "201":
+          description: El producto fue actualizado exitosamente
+    delete:
+      summary: Eliminar un producto por su id
+      tags:
+        - Products
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: id del producto que deseamos eliminar
+          schema:
+            type: string
+      responses:
+        "200":
+          description: El producto fue eliminado exitosamente
+        "404":
+          description: Producto no encontrado
         "500":
           description: Error del servidor
 components:
@@ -55,3 +135,68 @@ components:
         code: 214521455214588
         stock: 100
         owner: admin
+  requestBodies:
+    createProduct:
+      type: object
+      properties:
+        title:
+          type: String
+          description: Nombre del producto
+        description:
+          type: String
+          description: Descripción del producto
+        price:
+          type: Number
+          description: Precio del producto
+        thumbnail:
+          type: String
+          description: Imagen del producto
+        category:
+          type: String
+          description: Categoría del producto
+        code:
+          type: String
+          description: No puede repetirse
+        stock:
+          type: Number
+          description: Stock del producto
+      example:
+        title: Mermelada
+        description: Frasco de 350gr. Sabor durazno
+        price: 2400
+        thumbnail: https://google.com.ar/
+        category: Almacen
+        code: 51487459874
+        stock: 100
+    updateProduct:
+      type: object
+      properties:
+        title:
+          type: String
+          description: Nombre del producto
+        description:
+          type: String
+          description: Descripción del producto
+        price:
+          type: Number
+          description: Precio del producto
+        thumbnail:
+          type: String
+          description: Imagen del producto
+        category:
+          type: String
+          description: Categoría del producto
+        code:
+          type: String
+          description: No puede repetirse
+        stock:
+          type: Number
+          description: Stock del producto
+      example:
+        title: Mermelada
+        description: Frasco de 350gr. Sabor durazno
+        price: 2400
+        thumbnail: https://google.com.ar/
+        category: Almacen
+        code: 51487459874
+        stock: 100
