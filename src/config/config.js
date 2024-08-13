@@ -12,7 +12,8 @@ const objectConfig = {
     persistence:process.env.PERSISTENCE,
     node_env:process.env.NODE_ENV,
     gmail_pass:process.env.GMAIL_PASS,
-    gmail_user:process.env.GMAIL_USER
+    gmail_user:process.env.GMAIL_USER,
+    mongo_prueba:process.env.MONGO_PRUEBA
 }
 
 module.exports = {

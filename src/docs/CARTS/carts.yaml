@@ -20,6 +20,29 @@ paths:
                 $ref: '#components/schemas/Cart'
         "500":
           description: Error del servidor
+  /api/carts/{cid}/product/{pid}:
+    post:
+      summary: Agrega producto al carrito, indicando el id del carrito y el id del producto
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: id del carrito
+          schema:
+            $type: String
+        - name: pid
+          in: path
+          required: true
+          description: id del producto
+          schema:
+            $type: String
+      responses:
+        "200":
+          description: Producto agregado al carrito
+        "500":
+          description: Error del servidor
 components:
   schemas:
     Cart:
@@ -67,3 +90,4 @@ components:
                       "_id": "66b259e43cb3d61f46a775d4"
                     }
                   ]
+  
