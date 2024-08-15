@@ -9,7 +9,8 @@ const router = Router()
 router.post('/',createCart)
 
 //Leer cada carrito
-router.get('/:cid',auth(["user","premium"]),getCart)
+// router.get('/:cid',auth(["user","premium"]),getCart)
+router.get('/:cid',getCart)
 
 //Agregar productos, indicando id cart y id product
 router.post('/:cid/product/:pid',addProduct)
