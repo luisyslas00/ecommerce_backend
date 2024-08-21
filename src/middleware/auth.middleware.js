@@ -11,9 +11,13 @@ const auth = (roles) =>{
             const userFound = new UserDtoDB(userCookie)
             userToken = userFound
         }
-        if(!req.user&&!userToken) return res.status(401).send({status:'error',error:'Unauthorized'})
+        if(!req.user&&!userToken){
+            return res.redirect('/'); 
+        }
         const user = req.user || userToken;
-        if(!roles.includes(user.role)) return res.status(401).send({ status: 'error', error: 'Not Permissions' });
+        if(!roles.includes(user.role)){
+            return res.redirect('/'); 
+        } 
         next()
     }
 }

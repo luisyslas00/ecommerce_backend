@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken')
-const { objectConfig } = require("../config/config.js")
+const { objectConfig } = require("../config/config.js");
+const { UserDtoDB } = require('../dtos/userDB.dto.js');
 const {private_key} = objectConfig
 
 const checkAuth = (req, res, next) => {
@@ -9,7 +10,8 @@ const checkAuth = (req, res, next) => {
     }
     try {
         const decoded = jwt.verify(token, private_key)
-        req.user = decoded; 
+        const user = new UserDtoDB(decoded)
+        req.user = user; 
         next();
     } catch (err) {
         return res.status(401).send({ status: 'failed', message: 'Invalid token' });

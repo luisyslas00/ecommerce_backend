@@ -13,63 +13,76 @@ class userController {
         this.cartService = cartService
     }
     register = async(req,res)=>{
-        const { first_name,last_name,age,email,password } = req.body
-        if(!password || !email) return res.send({status:'failed',message:'Completar los datos'})
-        const userFound = await this.userService.getUser({email})
-        if(userFound) return res.send({status:'failed',message:'Usuario existente'})
-        const newCart = {
-            "products":[]
+        try {
+            const { first_name,last_name,age,email,password } = req.body
+            if(!password || !email) return res.send({status:'failed',message:'Completar los datos'})
+            const userFound = await this.userService.getUser({email})
+            if(userFound) return res.send({status:'failed',message:'Usuario existente'})
+            const newCart = {
+                "products":[]
+            }
+            const cart = await this.cartService.addCart(newCart)
+            const newUser ={
+                first_name,
+                last_name,
+                age,
+                email,
+                cartID:cart._id,
+                password: createHash(password)
+            }
+            const result = await this.userService.createUser(newUser)
+            const token = generateToken({
+                email,
+                id:result._id,
+                first_name,
+                last_name
+            })
+            res.cookie('token',token,{
+                maxAge:60*60*1000*24,
+                httpOnly:true
+            }).send({status:'success',message:'Usuario registrado'})
+        } catch (error) {
+            req.logger.error('Error al registrarse')
         }
-        const cart = await this.cartService.addCart(newCart)
-        const newUser ={
-            first_name,
-            last_name,
-            age,
-            email,
-            cartID:cart._id,
-            password: createHash(password)
-        }
-        const result = await this.userService.createUser(newUser)
-        const token = generateToken({
-            email,
-            id:result._id,
-            first_name,
-            last_name
-        })
-        res.cookie('token',token,{
-            maxAge:60*60*1000*24,
-            httpOnly:true
-        }).send({status:'success',message:'Usuario registrado'})
     }
     login = async(req,res)=>{
-        const {email,password} =req.body
-        if(!password || !email) return res.send({status:'failed',message:'Completar los datos'})
-        const userFound = await this.userService.getUser({email})
-        if(!isValidPassword({password:userFound.password},password)) return res.send({status:'failed',message:'Datos incorrectos'})
-        const token = generateToken({
-            id:userFound._id,
-            email,
-            first_name: userFound.first_name,
-            last_name: userFound.last_name,
-            role:userFound.role,
-            cartID:userFound.cartID
-        })
-        res.cookie('token',token,{
-            maxAge:60*60*1000*24,
-            httpOnly:true
-        })
-        .send({status:'success',message:'Usuario logueado'})
+        try {
+            const {email,password} =req.body
+            if(!password || !email) return res.send({status:'failed',message:'Completar los datos'})
+            const userFound = await this.userService.getUser({email})
+            if(!userFound) return res.send({status:'failed',message:'Usuario inexistente'})
+            if(!isValidPassword({password:userFound.password},password)) return res.send({status:'failed',message:'Datos incorrectos'})
+            const token = generateToken({
+                id:userFound._id,
+                email,
+                first_name: userFound.first_name,
+                last_name: userFound.last_name,
+                role:userFound.role,
+                cartID:userFound.cartID
+            })
+            res.cookie('token',token,{
+                maxAge:60*60*1000*24,
+                httpOnly:true
+            })
+            .send({status:'success',message:'Usuario logueado'})
+        } catch (error) {
+            req.logger.error('Error al loguearse')
+        }
     }
     logout = (req,res)=>{
-        req.session.destroy((error)=>{
-            if(error){
-                return res.send({status:"failed",error:error})
-            }else{
-                return res.redirect('/login')
+        try {
+            req.session.destroy((error)=>{
+                if(error){
+                    return res.send({status:"failed",error:error})
+                }else{
+                    return res.redirect('/login')
+                }
+            })
+            if(req.cookies["token"]){
+                res.clearCookie('token')
             }
-        })
-        if(req.cookies["token"]){
-            res.clearCookie('token')
+        } catch (error) {
+            req.logger.error('Error al cerrar sesión')
         }
     }
     current = async(req,res)=>{
@@ -93,7 +106,7 @@ class userController {
             sendEmail({userMail:userFound.email,subject:`Reseteo password ${userFound.first_name}`,html})
             res.send({status:"success",payload:userFound.email})
         }catch(error){
-            console.log(error)
+            req.logger.error('Error al resetear contraseña')
         }
     }
     resetPasswordPass = async(req,res)=>{
@@ -117,7 +130,32 @@ class userController {
                 sendEmail({userMail:user.email,subject:`Cambio de contraseña`,html})
             }
         } catch (error) {
-            
+            req.logger.error('Error al cambiar la contraseña')
+        }
+    }
+    changeUserRole = async(req,res)=>{
+        try {
+            const {uid} = req.params
+            const user = await this.userService.getUser({'_id':uid})
+            user.role = user.role === 'user' ? 'premium' : 'user';
+            await user.save();
+            if(req.cookies["token"]){
+                const token = generateToken({
+                    id:user._id,
+                    email:user.email,
+                    first_name: user.first_name,
+                    last_name: user.last_name,
+                    role:user.role,
+                    cartID:user.cartID
+                })
+                res.cookie('token',token,{
+                    maxAge:60*60*1000*24,
+                    httpOnly:true
+                })
+            }
+            return res.status(200).send({status:"success",message:"Rol actualizado"});
+        } catch (error) {
+            req.logger.error('Error al cambiar el rol del usuario')
         }
     }
 }

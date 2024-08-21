@@ -22,7 +22,6 @@ const initializePassportGithub = () => {
                     "products":[]
                 }
                 const cart = await cartManager.addCart(newCart)
-                console.log(profile._json)
                 let newUser = {
                     first_name:profile._json.name,
                     last_name:'',

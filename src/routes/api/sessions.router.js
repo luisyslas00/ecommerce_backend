@@ -3,9 +3,10 @@ const { auth } = require('../../middleware/auth.middleware.js')
 const passport = require('passport')
 const { passportCall } = require('../../middleware/passportCall.middleware.js')
 const { userController } = require('../../controller/users.controller.js')
+const { extractUserInfo } = require('../../middleware/extractUserInfo.middleware.js')
 
 const router = Router()
-const {register,login,logout,current,resetPassword,resetPasswordPass} = new userController
+const {register,login,logout,current,resetPassword,resetPasswordPass,changeUserRole} = new userController
 
 //Register
 router.post('/register',register)
@@ -19,6 +20,10 @@ router.get('/github',passport.authenticate('github',{scope:['user:email']}),asyn
 router.get('/githubcallback',passport.authenticate('github',{failureRedirect:'/login'}),async(req,res)=>{
     try {
         req.session.user = req.user
+        // req.session.cookie({
+        //     originalMaxAge: 60000,
+        //     httpOnly:true
+        // })
         console.log(req.session)
         res.redirect('/products')
     } catch (error) {
@@ -35,6 +40,9 @@ router.get('/current',passportCall('jwt'),auth(['admin', 'user']),current)
 router.post('/resetpassword',resetPassword)
 
 router.post('/resetpassword/:token',resetPasswordPass)
+
+//Actualizar rol
+router.get('/premium/:uid', changeUserRole);
 
 module.exports = router
 

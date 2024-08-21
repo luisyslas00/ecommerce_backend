@@ -1,4 +1,4 @@
-const { cartService, ticketService } = require("../service/index.js")
+const { cartService, ticketService, productService } = require("../service/index.js")
 const jwt = require('jsonwebtoken')
 const { objectConfig } = require('../config/config.js')
 const { UserDtoDB } = require('../dtos/userDB.dto.js')
@@ -18,7 +18,7 @@ class cartController {
             res.send({status:"success",payload:result})
         }
         catch(error){
-            console.log(error)
+            req.logger.error('Error al crear el carrito')
         }
     }
     getCart = async (req,res)=>{
@@ -35,12 +35,16 @@ class cartController {
     addProduct = async(req,res)=>{
         try{
             const {cid,pid} = req.params
+            const product = await productService.getProductById(pid)
+            if (product[0].owner === req.user.email) {
+                return res.status(403).send({ status: "failed", message: "No puedes agregar tu propio producto al carrito" });
+            }
             const result = await this.cartService.addProduct(cid,pid)
             if(result.status==="failed") return res.send(result)
             res.send({status:"success",payload:result})
         }
         catch(error){
-            console.log(error)
+            req.logger.error('Error al agregar un producto al carrito')
         }
     }
     deleteProduct = async(req,res)=>{
@@ -63,7 +67,7 @@ class cartController {
             res.send({status:"success",payload:result})
         }
         catch(error){
-            console.log(error)
+            req.logger.error('Error al actualizar el carrito')
         }
     }
     updateQuantity = async(req,res)=>{
@@ -72,19 +76,22 @@ class cartController {
             const newQuantity = req.body.quantity;
             console.log(req.body)
             const result = await this.cartService.updateQuantity(cid,pid,newQuantity)
-            console.log(result)
             if(result.status==="failed") return res.send(result)
             res.send({status:"success",payload:result})
         }
         catch(error){
-            console.log(error)
+            req.logger.error('Error al actualizar la cantidad del carrito')
         }
     }
     deleteProducts = async(req,res)=>{
-        const {cid} = req.params
-        const result = await this.cartService.deleteCart(cid)
-        if(result.status==="failed") return res.send(result)
-        res.send({status:"success",payload:result})
+        try {
+            const {cid} = req.params
+            const result = await this.cartService.deleteCart(cid)
+            if(result.status==="failed") return res.send(result)
+            res.send({status:"success",payload:result})
+        } catch (error) {
+            req.logger.error('Error al eliminar un producto del carrito')
+        }
     }
     endPurchase = async(req,res)=>{
         try {
@@ -103,7 +110,7 @@ class cartController {
             }
             res.send({status:"success",payload:newTicket})
         } catch (error) {
-            console.log(error)
+            req.logger.error('Error al finalizar la compra')
         }
     }
 }

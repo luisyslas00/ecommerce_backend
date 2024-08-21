@@ -8,6 +8,8 @@ const { objectConfig } = require('../config/config.js')
 const { UserDtoDB } = require('../dtos/userDB.dto.js')
 const { auth } = require('../middleware/auth.middleware.js')
 const { checkAuth } = require('../middleware/checkAuthtoken.middleware.js')
+const { extractUserInfo } = require('../middleware/extractUserInfo.middleware.js')
+const { checkNotAuthenticated } = require('../middleware/verifyLogin.middleware.js')
 const {private_key} = objectConfig
 
 const cartManager = new CartDaoMongo()
@@ -16,20 +18,14 @@ const productManager = new ProductDaoMongo()
 
 const router = Router()
 
-router.get('/',(req,res)=>{
-    let userDb
-    let cartDB
-    if(req.cookies["token"]){
-        const userCookie = jwt.verify(req.cookies["token"], private_key)
-        const userFound = new UserDtoDB(userCookie)
-        userDb = userFound.fullname
-        cartDB = userFound.cartID
-    }
+router.get('/',extractUserInfo,(req,res)=>{
+    let userDb = req.user?.fullname || req.user?.first_name
+    let cartDB = req.user?.cartID
     res.render('index',{
         title:"Home | Tienda",
         styles:'styles.css',
-        cartID:req.session?.user?.cartID||cartDB,
-        user:req.session?.user?.first_name|| userDb,
+        cartID:cartDB,
+        user:userDb,
     })
 })
 
@@ -37,43 +33,30 @@ router.post('/upload-file',uploader.single('myFile'),(req,res)=>{
     res.render('successFile')
 })
 
-router.get("/chat",auth(["user"]),async(req,res)=>{
+router.get("/chat",auth(["user","premium"]),extractUserInfo,async(req,res)=>{
     try{
-        let userDb
-        let cartDB
-        if(req.cookies["token"]){
-            const userCookie = jwt.verify(req.cookies["token"], private_key)
-            const userFound = new UserDtoDB(userCookie)
-            userDb = userFound.fullname
-            cartDB = userFound.cartID
-        }
-        //Traer el chat
+        let userDb = req.user?.fullname || req.user?.first_name
+        let cartDB = req.user?.cartID
         const messages = await messageManager.getMessages()
         res.render("chat",{
             title:'Chat | Tienda',
             messagesExiste:messages.length!==0,
             messages,
             styles:'styles.css',
-            cartID:req.session?.user?.cartID||cartDB,
-            user:req.session?.user?.first_name||userDb,
+            cartID:cartDB,
+            user:userDb,
         })
     }
     catch(error){
-        console.log(error)
+        req.logger.error('Error de ingreso al chat')
     }
 })
 
-router.get("/products",async(req,res)=>{
+router.get("/products",extractUserInfo,async(req,res)=>{
     const {newPage,limit,ord} = req.query
     const {docs, totalPages,page,hasPrevPage,hasNextPage,prevPage,nextPage} = await productManager.getProducts({newPage,limit,ord})
-    let userDb
-    let cartDB
-    if(req.cookies["token"]){
-        const userCookie = jwt.verify(req.cookies["token"], private_key)
-        const userFound = new UserDtoDB(userCookie)
-        userDb = userFound.fullname
-        cartDB = userFound.cartID
-    }
+    let userDb = req.user?.fullname || req.user?.first_name
+    let cartDB = req.user?.cartID
     res.render("products",{
         title:"Productos | Tienda",
         products:docs,
@@ -85,76 +68,54 @@ router.get("/products",async(req,res)=>{
         prevPage,
         nextPage,
         styles:'styles.css',
-        user:req.session?.user?.first_name||userDb,
-        cartID:req.session?.user?.cartID||cartDB,
+        cartID:cartDB,
+        user:userDb,
     })
 })
 
-router.get('/carts/:cid',auth(["user","premium"]),async(req,res)=>{
+router.get('/carts/:cid',auth(["user","premium"]),extractUserInfo,async(req,res)=>{
     const {cid}=req.params
     const cart = await cartManager.getCart(cid)
     const products = cart.products
-    let userDb
-    let cartDB
-    if(req.cookies["token"]){
-        const userCookie = jwt.verify(req.cookies["token"], private_key)
-        const userFound = new UserDtoDB(userCookie)
-        userDb = userFound.fullname
-        cartDB = userFound.cartID
-    }
+    let userDb = req.user?.fullname || req.user?.first_name
+    let cartDB = req.user?.cartID
     res.render("carts",{
         products:products,
         styles:'styles.css',
-        cartID:req.session?.user?.cartID||cartDB,
-        user:req.session?.user?.first_name||userDb,
+        cartID:cartDB,
+        user:userDb,
         productsExist:products?.length>0
     })
 })
 
-router.get('/login',async(req,res)=>{
-    let cartDB
-    if(req.cookies["token"]){
-        const userCookie = jwt.verify(req.cookies["token"], private_key)
-        const userFound = new UserDtoDB(userCookie)
-        cartDB = userFound.cartID
-    }
+router.get('/login',checkNotAuthenticated,extractUserInfo,async(req,res)=>{
+    let cartDB = req.user?.cartID
     res.render("login",{
         title:"Iniciar Sesión | Tienda",
         styles:'styles.css',
-        cartID:req.session?.user?.cartID||cartDB
+        cartID:cartDB,
     })
 })
 
-router.get('/register',async(req,res)=>{
-    let cartDB
-    if(req.cookies["token"]){
-        const userCookie = jwt.verify(req.cookies["token"], private_key)
-        const userFound = new UserDtoDB(userCookie)
-        cartDB = userFound.cartID
-    }
+router.get('/register',checkNotAuthenticated,extractUserInfo,async(req,res)=>{
+    let cartDB = req.user?.cartID
     res.render("register",{
         title:"Registrarse | Tienda",
         styles:'styles.css',
-        cartID:req.session?.user?.cartID||cartDB
+        cartID:cartDB
     })
 })
 
-router.get('/realtimeproducts',auth(["admin","premium"]),checkAuth,async(req,res)=>{
+router.get('/realtimeproducts',auth(["admin","premium"]),extractUserInfo,async(req,res)=>{
     try{
-        let userDb
-        let cartDB
-        let userEmail
-        if(req.user){
-            const userFound = new UserDtoDB(req.user)
-            userDb = userFound.fullname
-            cartDB = userFound.cartID
-            userEmail = userFound.email
-        }
+        let userDb = req.user?.fullname || req.user?.first_name
+        let cartDB = req.user?.cartID
+        let userEmail = req.user?.email
         res.render('realTimeProducts',{
             styles:'styles.css',
-            cartID:req.session?.user?.cartID||cartDB,
-            user:req.session?.user?.first_name||userDb,
-            userEmail:req.session?.user?.email||userEmail
+            cartID:cartDB,
+            user:userDb,
+            userEmail:userEmail
         })
     }
     catch(error){

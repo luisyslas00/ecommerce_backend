@@ -8,25 +8,21 @@ const requester = supertest('http://localhost:3000')
 
 describe('Test del Ecommerce',()=>{
     describe('Test de PRODUCTS',()=>{
-        // it('El endpoint POST /api/products debe crear un producto correctamente', async()=>{
-        //     let mockProduct = {
-        //         title: "Televisor",
-        //         description: "20 pulgadas",
-        //         price:120000,
-        //         thumbnail:"https://google.com.ar",
-        //         category:"Tecno",
-        //         code:"121349834981",
-        //         stock:200
-        //     }
-        //     const {
-        //         statusCode,
-        //         ok,
-        //         _body
-        //     } = await requester.post('/api/products').send(mockProduct)
-        //     //Revisar con token
-        //     console.log(_body)
-        //     // expect(_body.payload).to.have.property('_id')
-        // })
+        it('El endpoint POST /api/products debe crear un producto correctamente', async()=>{
+            let mockProduct = {
+                title: "Televisor",
+                description: "20 pulgadas",
+                price:120000,
+                thumbnail:"https://google.com.ar",
+                category:"Tecno",
+                code:"121349834981",
+                stock:200
+            }
+            const {
+                _body
+            } = await requester.post('/api/products').send(mockProduct)
+            expect(_body.payload).to.have.property('_id')
+        })
         it('Traer todos los productos en el endpoint GET /api/products', async()=>{
             const {
                 ok
@@ -44,16 +40,13 @@ describe('Test del Ecommerce',()=>{
     describe('Test de CARTS',()=>{
         it('El endpoint POST /api/carts debe crear un carrito correctamente', async () => {
             const {
-                statusCode,
-                ok,
                 _body
             } = await requester.post('/api/carts').send()
             expect(_body.payload).to.have.property('products')
         })
         it('El endpoint POST /api/carts/:cid/product/:pid debe agregar un producto al carrito', async () => {
-            let pid = '66abc73d45d179af1d71fff3'
-            const newCart = await requester.post('/api/carts').send()
-            const cid = newCart._body.payload._id
+            let pid = '663fa98d9376a71d3f82758c'
+            const cid = '6686a259408b5d75017b5feb'
             const {
                 ok
             } = await requester.post(`/api/carts/${cid}/product/${pid}`).send()

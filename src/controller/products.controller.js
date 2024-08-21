@@ -15,7 +15,7 @@ class productController {
             res.send({status:"success",payload:docs,totalPages,prevPage,nextPage,page,hasPrevPage,hasNextPage})
         }
         catch(error){
-            console.log(error)
+            req.logger.error('Error al obtener los productos')
         }
     }
     getProductbyId = async(req,res)=>{
@@ -26,7 +26,7 @@ class productController {
             res.send({status:'success',payload:product})
         }
         catch(error){
-            console.log(error)
+            req.logger.error('Error al obtener el producto (ID)')
         }
     }
     addProduct = async (req,res)=>{
@@ -41,8 +41,9 @@ class productController {
             if(req.user.role ==="premium"){
                 newProduct.owner = req.user.email
             }
-            await this.productService.addProduct(newProduct)
-            res.send({status:"success",message:newProduct})
+            const productDB = await this.productService.addProduct(newProduct)
+            console.log(productDB)
+            res.send({status:"success",payload:productDB})
         } catch (error) {
             req.logger.error("Error al agregar un producto a la BD")
         }
@@ -56,7 +57,7 @@ class productController {
             res.send({status:'success',payload:result})
         }
         catch(error){
-            console.log(error)
+            req.logger.error('Error al actualizar el producto')
         }
     }
     deleteProduct = async(req,res)=>{
@@ -74,7 +75,7 @@ class productController {
             res.send({status:'success',payload:result})
         }
         catch(error){
-            console.log(error)
+            req.logger.error('Error al eliminar el producto')
         }
     }
 }

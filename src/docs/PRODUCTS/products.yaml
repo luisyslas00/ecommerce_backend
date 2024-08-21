@@ -1,5 +1,5 @@
 paths:
-  /api/products/:
+  /api/products:
     get:
       summary: Obtiene todos los productos
       tags:
@@ -15,7 +15,6 @@ paths:
                   $ref: '#components/schemas/Product'
         "500":
           description: Error del servidor
-  /api/products:
     post:
       summary: Crea un nuevo producto
       tags:

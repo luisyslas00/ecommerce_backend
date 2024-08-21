@@ -6,20 +6,12 @@ class CartDaoMongo{
         this.cartsModel = cartsModel;
     }
     async getCart(id){
-        const result = await this.cartsModel.findOne({_id:id}).lean()
-        return result
+        return await this.cartsModel.findOne({_id:id}).lean() 
     }
     async addCart(cart){
         return await this.cartsModel.create(cart)
     }
     async addProduct(cid,pid){
-        const product = await productsModel.findOne({"_id": pid});
-        // if (!product) {
-        //     return {status: 'failed', payload: "Producto no encontrado"};
-        // }
-        // if (product.stock <= 0) {
-        //     return {status: 'failed', payload: "Producto sin stock"};
-        // }
         const searchCart = await this.cartsModel.findOne({"_id":cid})
         let productExist=false
         if(searchCart){
@@ -35,7 +27,7 @@ class CartDaoMongo{
             }
         }
         const resp = await this.cartsModel.findByIdAndUpdate({"_id":cid},searchCart)
-        return resp    
+        return resp
     }
     async deleteCart(id){
         const searchCart = await this.cartsModel.findOne({"_id":id})

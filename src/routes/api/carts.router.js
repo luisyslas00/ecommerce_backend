@@ -1,6 +1,7 @@
 const { Router } = require('express')
 const { cartController } = require('../../controller/carts.controller.js')
 const { auth } = require('../../middleware/auth.middleware.js')
+const { checkAuth } = require('../../middleware/checkAuthtoken.middleware.js')
 const {createCart,getCart,addProduct,deleteProduct,updateCart,updateQuantity,deleteProducts,endPurchase} = new cartController()
 
 
@@ -9,11 +10,11 @@ const router = Router()
 router.post('/',createCart)
 
 //Leer cada carrito
-// router.get('/:cid',auth(["user","premium"]),getCart)
-router.get('/:cid',getCart)
+router.get('/:cid',auth(["user","premium"]),getCart)
+// router.get('/:cid',getCart)
 
 //Agregar productos, indicando id cart y id product
-router.post('/:cid/product/:pid',addProduct)
+router.post('/:cid/product/:pid',checkAuth,addProduct)
 
 //Eliminar del carrito el producto seleccionado
 router.delete('/:cid/product/:pid',deleteProduct)

@@ -12,8 +12,7 @@ router.get('/',getProducts)
 // //Ver producto por ID
 router.get('/:pid',getProductbyId)
 //Agregar producto -- VERIFICAR
-// router.post('/',checkAuth,addProduct)
-router.post('/',addProduct)
+router.post('/',checkAuth,addProduct)
 // //Modificar producto
 router.put('/:pid',updateProduct)
 // //Eliminar producto

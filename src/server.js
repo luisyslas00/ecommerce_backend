@@ -50,7 +50,13 @@ app.use(session({
     }),
     secret:session_secret,
     resave:true,
-    saveUninitialized:true
+    saveUninitialized:true,
+    cookie: {
+        path: '/',
+        httpOnly: true,
+        maxAge: 3600000 , // 24 horas en milisegundos
+        expires: new Date(Date.now() + 3600000 ) // Expira en 1 hora
+    }
 }))
 
 //swagger
