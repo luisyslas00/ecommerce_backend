@@ -31,16 +31,17 @@ class userController {
                 password: createHash(password)
             }
             const result = await this.userService.createUser(newUser)
-            const token = generateToken({
-                email,
-                id:result._id,
-                first_name,
-                last_name
-            })
-            res.cookie('token',token,{
-                maxAge:60*60*1000*24,
-                httpOnly:true
-            }).send({status:'success',message:'Usuario registrado'})
+            // const token = generateToken({
+            //     email,
+            //     id:result._id,
+            //     first_name,
+            //     last_name
+            // })
+            // res.cookie('token',token,{
+            //     maxAge:60*60*1000*24,
+            //     httpOnly:true
+            // })
+            res.send({status:'success',message:'Usuario registrado'})
         } catch (error) {
             req.logger.error('Error al registrarse')
         }

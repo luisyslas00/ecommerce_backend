@@ -57,6 +57,7 @@ router.get("/products",extractUserInfo,async(req,res)=>{
     const {docs, totalPages,page,hasPrevPage,hasNextPage,prevPage,nextPage} = await productManager.getProducts({newPage,limit,ord})
     let userDb = req.user?.fullname || req.user?.first_name
     let cartDB = req.user?.cartID
+    let userEmail = req.user?.email
     res.render("products",{
         title:"Productos | Tienda",
         products:docs,
@@ -70,6 +71,7 @@ router.get("/products",extractUserInfo,async(req,res)=>{
         styles:'styles.css',
         cartID:cartDB,
         user:userDb,
+        userEmail:userEmail
     })
 })
 
@@ -153,5 +155,18 @@ router.get('/expired', async (req, res) => {
         styles:'styles.css'
     })
 });
+
+router.get('/profile',auth(["admin","premium","user"]),extractUserInfo,async(req,res)=>{
+    let userDb = req.user?.fullname || req.user?.first_name
+    let cartDB = req.user?.cartID
+    let role = req.user?.role
+    res.render('profile',{
+        styles:'styles.css',
+        cartID:cartDB,
+        user:userDb,
+        id:req.user?._id || req.user?._id,
+        role:role==='premium'
+    })
+})
 
 module.exports = router

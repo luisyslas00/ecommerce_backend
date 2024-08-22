@@ -36,15 +36,18 @@ class cartController {
         try{
             const {cid,pid} = req.params
             const product = await productService.getProductById(pid)
+            console.log(product[0].owner)
+            console.log(req.user.email)
             if (product[0].owner === req.user.email) {
                 return res.status(403).send({ status: "failed", message: "No puedes agregar tu propio producto al carrito" });
             }
             const result = await this.cartService.addProduct(cid,pid)
-            if(result.status==="failed") return res.send(result)
+            // if(result.status==="failed") return res.send(result)
             res.send({status:"success",payload:result})
         }
         catch(error){
             req.logger.error('Error al agregar un producto al carrito')
+            res.status(500).send({status: "error", message: "Error al agregar un producto al carrito"});
         }
     }
     deleteProduct = async(req,res)=>{

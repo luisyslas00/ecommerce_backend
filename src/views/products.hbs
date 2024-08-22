@@ -7,6 +7,7 @@
                     <div class="card_product">
                         <p class="product_name">{{this.title}}</p>
                         <p class="product_price">${{this.price}}</p>
+                        <p>Stock: {{this.stock}}</p>
                         {{#if this.stock}}
                         <button class="button_add_product" id="{{this._id}}">Agregar al carrito</button>
                         {{else}}

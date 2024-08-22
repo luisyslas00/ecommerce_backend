@@ -1,0 +1,22 @@
+<h1>Bienvenido {{user}}!</h1>
+{{#if role}}
+    <h2>¡Felicitaciones ya sos PREMIUM!</h2>
+    <a href="/realtimeproducts">Publica tus productos</a>
+{{else}}
+    <h2>Pasate a Premium completando el formulario</h2>
+{{/if}}
+{{#if role}}
+    <form action="" enctype="multipart/form-data" id="formulario" data-id="{{id}}">
+        <button id="btn-enviar">DARSE DE BAJA</button>
+    </form>
+{{else}}
+    <form action="" enctype="multipart/form-data" id="formulario" data-id="{{id}}">
+        <input type="file" name="myFile" id="myFile">
+        <button id="btn-enviar">ENVIAR</button>
+    </form>
+{{/if}}
+{{!-- <form action="/upload-file" method="POST" enctype="multipart/form-data" id="formulario">
+    <input type="file" name="myFile" id="myFile">
+    <button id="btn-enviar">Pasarme a Premium</button>
+</form> --}}
+<script src="/js/changeRole.js"></script>

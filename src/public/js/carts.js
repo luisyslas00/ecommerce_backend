@@ -13,6 +13,9 @@ document.addEventListener('DOMContentLoaded', ()=>{
                             'Content-Type': 'application/json'
                         }
                     });
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
                     const result = await response.json();
                     console.log(result)
                     if (result.status === "success") {
@@ -21,7 +24,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
                         alert('Error al agregar el producto al carrito');
                     }
                 } catch (error) {
-                    console.error('Error:', error);
+                    console.error('Error caught:', error);
                     alert('Ocurrió un error al agregar el producto al carrito');
                 }
             });

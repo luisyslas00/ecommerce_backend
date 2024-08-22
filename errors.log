@@ -33,3 +33,39 @@ error: Error al loguear con Github
 error: Error al loguear con Github
 error: Error al loguearse
 error: Error al loguearse
+error: Token no válido
+error: Error al agregar un producto a la BD
+error: Error al agregar un producto al carrito
+error: Error al agregar un producto al carrito
+error: Error al agregar un producto al carrito
+error: Error al agregar un producto al carrito
+error: Error al agregar un producto al carrito
+error: Error al agregar un producto al carrito
+error: Error al agregar un producto al carrito
+error: Error al agregar un producto al carrito
+error: Error al agregar un producto al carrito
+error: Error al agregar un producto al carrito
+error: Error al agregar un producto al carrito
+error: Error al agregar un producto al carrito
+error: Error al agregar un producto al carrito
+error: Error al agregar un producto al carrito
+error: Error al agregar un producto al carrito
+error: Error al agregar un producto al carrito
+error: Error al agregar un producto al carrito
+error: Error al agregar un producto al carrito
+error: Error al agregar un producto al carrito
+error: Error al agregar un producto al carrito
+error: Error al agregar un producto al carrito
+error: Error al agregar un producto al carrito
+error: Error al agregar un producto al carrito Cannot set headers after they are sent to the client {"code":"ERR_HTTP_HEADERS_SENT","stack":"Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client\n    at ServerResponse.setHeader (node:_http_outgoing:659:11)\n    at ServerResponse.header (C:\\Users\\yslas\\OneDrive\\Escritorio\\proyecto_backend_yslas-main\\node_modules\\express\\lib\\response.js:795:10)\n    at ServerResponse.send (C:\\Users\\yslas\\OneDrive\\Escritorio\\proyecto_backend_yslas-main\\node_modules\\express\\lib\\response.js:175:12)\n    at ServerResponse.json (C:\\Users\\yslas\\OneDrive\\Escritorio\\proyecto_backend_yslas-main\\node_modules\\express\\lib\\response.js:279:15)\n    at addProduct (C:\\Users\\yslas\\OneDrive\\Escritorio\\proyecto_backend_yslas-main\\src\\controller\\carts.controller.js:70:24)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)"}
+error: Error al agregar un producto al carrito
+error: Error al agregar un producto al carrito
+error: Error al agregar un producto al carrito
+error: Error al agregar un producto al carrito
+error: Error al agregar un producto al carrito
+error: Error al agregar un producto al carrito
+error: Error al agregar un producto al carrito
+error: Error al agregar un producto al carrito
+error: Error al agregar un producto al carrito
+error: Error al agregar un producto al carrito
+error: Error al agregar un producto al carrito
