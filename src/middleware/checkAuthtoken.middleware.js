@@ -22,8 +22,6 @@ const checkAuth = (req, res, next) => {
     }
     if(req.session.user){
         try {
-            console.log('Estoy en Session')
-            console.log(req.session.user)
             const user = new UserDtoDB(req.session.user)
             req.user = user
         } catch (error) {

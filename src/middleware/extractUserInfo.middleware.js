@@ -12,8 +12,9 @@ const extractUserInfo = (req,res,next) =>{
         }catch(error){
             req.logger.error('Error de autenticación')
         }
-    }else{
-        req.user = req.session?.user
+    }
+    if(req.session?.user){
+        req.user = new UserDtoDB(req.session?.user)
     }
     next()
 }

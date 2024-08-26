@@ -164,7 +164,7 @@ router.get('/profile',auth(["admin","premium","user"]),extractUserInfo,async(req
         styles:'styles.css',
         cartID:cartDB,
         user:userDb,
-        id:req.user?._id || req.user?._id,
+        id:req.user?._id,
         role:role==='premium'
     })
 })

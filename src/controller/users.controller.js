@@ -54,13 +54,15 @@ class userController {
             if(!userFound) return res.send({status:'failed',message:'Usuario inexistente'})
             if(!isValidPassword({password:userFound.password},password)) return res.send({status:'failed',message:'Datos incorrectos'})
             const token = generateToken({
-                id:userFound._id,
+                _id:userFound._id,
                 email,
                 first_name: userFound.first_name,
                 last_name: userFound.last_name,
                 role:userFound.role,
                 cartID:userFound.cartID
             })
+            userFound.last_connection = new Date();
+            await userFound.save();
             res.cookie('token',token,{
                 maxAge:60*60*1000*24,
                 httpOnly:true
@@ -70,8 +72,13 @@ class userController {
             req.logger.error('Error al loguearse')
         }
     }
-    logout = (req,res)=>{
+    logout = async(req,res)=>{
         try {
+            if(req.user){
+                const userFound = await this.userService.getUser({'email':req.user.email})
+                userFound.last_connection = new Date()
+                await userFound.save()
+            }
             req.session.destroy((error)=>{
                 if(error){
                     return res.send({status:"failed",error:error})
@@ -80,6 +87,7 @@ class userController {
                 }
             })
             if(req.cookies["token"]){
+                console.log(req.user)
                 res.clearCookie('token')
             }
         } catch (error) {
@@ -114,7 +122,6 @@ class userController {
         try {
             const {token} =req.params
             const {password,newPassword} = req.body
-            console.log(req.body)
             const decoded = jwt.verify(token, private_key);
             if (!decoded) {
                 return res.send({status:"failed",error:"Error de token"});
@@ -142,7 +149,7 @@ class userController {
             await user.save();
             if(req.cookies["token"]){
                 const token = generateToken({
-                    id:user._id,
+                    _id:user._id,
                     email:user.email,
                     first_name: user.first_name,
                     last_name: user.last_name,
@@ -153,6 +160,9 @@ class userController {
                     maxAge:60*60*1000*24,
                     httpOnly:true
                 })
+            }
+            if(req.session?.user){
+                req.session.user.role = user.role
             }
             return res.status(200).send({status:"success",message:"Rol actualizado"});
         } catch (error) {

@@ -4,6 +4,8 @@ const passport = require('passport')
 const { passportCall } = require('../../middleware/passportCall.middleware.js')
 const { userController } = require('../../controller/users.controller.js')
 const { extractUserInfo } = require('../../middleware/extractUserInfo.middleware.js')
+const { userService } = require('../../service/index.js')
+const { checkAuth } = require('../../middleware/checkAuthtoken.middleware.js')
 
 const router = Router()
 const {register,login,logout,current,resetPassword,resetPasswordPass,changeUserRole} = new userController
@@ -24,7 +26,9 @@ router.get('/githubcallback',passport.authenticate('github',{failureRedirect:'/l
         //     originalMaxAge: 60000,
         //     httpOnly:true
         // })
-        console.log(req.session)
+        const userFound = await userService.getUser({'email':req.session.user.email})
+        userFound.last_connection = new Date()
+        await userFound.save()
         res.redirect('/products')
     } catch (error) {
         req.logger.error('Error al loguear con Github')
@@ -32,7 +36,7 @@ router.get('/githubcallback',passport.authenticate('github',{failureRedirect:'/l
 })
 
 //Logout
-router.get('/logout',logout)
+router.get('/logout',checkAuth,logout)
 
 //Current
 router.get('/current',passportCall('jwt'),auth(['admin', 'user']),current)
@@ -42,7 +46,7 @@ router.post('/resetpassword',resetPassword)
 router.post('/resetpassword/:token',resetPasswordPass)
 
 //Actualizar rol
-router.post('/premium/:uid', changeUserRole);
+router.post('/premium/:uid',changeUserRole);
 
 module.exports = router
 
