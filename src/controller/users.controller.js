@@ -146,6 +146,9 @@ class userController {
             const {uid} = req.params
             const user = await this.userService.getUser({'_id':uid})
             user.role = user.role === 'user' ? 'premium' : 'user';
+            if(user.role === 'user'){
+                user.documents = []
+            }
             await user.save();
             if(req.cookies["token"]){
                 const token = generateToken({
@@ -167,6 +170,32 @@ class userController {
             return res.status(200).send({status:"success",message:"Rol actualizado"});
         } catch (error) {
             req.logger.error('Error al cambiar el rol del usuario')
+        }
+    }
+    uploadFiles = async(req,res)=>{
+        try {
+            const { uid } = req.params;
+            const files = req.files;
+            console.log(req.files)
+            if (!files || files.length === 0 ||files.length < 3) {
+                return res.status(400).json({ status: 'failed', message: 'No files uploaded' });
+            }
+    
+            const documents = files.map(file => ({
+                name: file.fieldname,
+                reference: `/uploads/${file.fieldname}/${file.filename}`
+            }));
+
+            const user = await this.userService.getUser({'_id':uid})
+            if (!user) {
+                return res.status(404).json({ status: 'failed', message: 'User not found' });
+            }
+            user.documents.push(...documents)
+            await user.save()
+
+            res.status(200).json({ status: 'success', message: 'Documents uploaded successfully' });
+        } catch (error) {
+            res.status(500).json({ status: 'failed', error: error.message });
         }
     }
 }

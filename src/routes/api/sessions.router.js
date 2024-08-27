@@ -6,9 +6,11 @@ const { userController } = require('../../controller/users.controller.js')
 const { extractUserInfo } = require('../../middleware/extractUserInfo.middleware.js')
 const { userService } = require('../../service/index.js')
 const { checkAuth } = require('../../middleware/checkAuthtoken.middleware.js')
+const { uploader } = require('../../middleware/multer.middleware.js')
+const { checkFiles } = require('../../middleware/checkFiles.middleware.js')
 
 const router = Router()
-const {register,login,logout,current,resetPassword,resetPasswordPass,changeUserRole} = new userController
+const {register,login,logout,current,resetPassword,resetPasswordPass,changeUserRole,uploadFiles} = new userController
 
 //Register
 router.post('/register',register)
@@ -47,6 +49,9 @@ router.post('/resetpassword/:token',resetPasswordPass)
 
 //Actualizar rol
 router.post('/premium/:uid',changeUserRole);
+
+//
+router.post('/:uid/documents',uploader.any(),uploadFiles)
 
 module.exports = router
 
