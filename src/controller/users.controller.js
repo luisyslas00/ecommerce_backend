@@ -176,7 +176,7 @@ class userController {
         try {
             const { uid } = req.params;
             const files = req.files;
-            console.log(req.files)
+            
             if (!files || files.length === 0 ||files.length < 3) {
                 return res.status(400).json({ status: 'failed', message: 'No files uploaded' });
             }
