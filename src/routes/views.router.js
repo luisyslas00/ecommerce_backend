@@ -165,7 +165,16 @@ router.get('/profile',auth(["admin","premium","user"]),extractUserInfo,async(req
         cartID:cartDB,
         user:userDb,
         id:req.user?._id,
-        role:role==='premium'
+        role:role==='premium',
+        admin:role==='admin'
+    })
+})
+
+router.get('/users',auth(['admin']),extractUserInfo,async(req,res)=>{
+    let userDb = req.user?.fullname || req.user?.first_name
+    res.render('users',{
+        styles:'styles.css',
+        user:userDb
     })
 })
 

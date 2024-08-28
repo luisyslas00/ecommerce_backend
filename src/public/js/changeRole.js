@@ -73,7 +73,8 @@ if(document.getElementById('formulario')){
             console.error('Error:', error);
         }
     });
-}else{
+}
+if(document.getElementById('formulario-baja')){
     form = document.getElementById('formulario-baja');
     form.addEventListener('submit', async function(event) {
         event.preventDefault();

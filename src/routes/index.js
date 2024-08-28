@@ -7,6 +7,7 @@ const chatRouter = require('./api/chat.router.js')
 const sessionsRouter = require('./api/sessions.router.js')
 const mockingRouter = require('./api/mocking.router.js')
 const loggerTest = require('./api/loggerTest.router.js')
+const usersRouter = require('./api/users.router.js')
 
 const router = Router()
 
@@ -14,9 +15,11 @@ router.use('/',viewsRouter)
 router.use('/api/products',productsRouter)
 router.use('/api/carts',cartsRouter)
 router.use('/api/chat',chatRouter)
+router.use('/api/users',usersRouter)
 router.use('/api/sessions',sessionsRouter)
 router.use('/api/mockingproducts',mockingRouter)
 router.use('/api/loggertest',loggerTest)
+
 
 //Escuchamos el servidor
 router.use((error,req,res,next)=>{

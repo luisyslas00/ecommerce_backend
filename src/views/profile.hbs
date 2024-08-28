@@ -1,21 +1,24 @@
 <h1>Bienvenido {{user}}!</h1>
-{{#if role}}
-    <h2>¡Felicitaciones ya sos PREMIUM!</h2>
-    <a href="/realtimeproducts">Publica tus productos</a>
+{{#if admin}}
+    <h2>Cuenta admin!</h2>
+    <a href="/users">Usuarios</a>
+    <a href="/realtimeproducts">Publicar productos</a>
 {{else}}
-    <h2>Pasate a Premium completando el formulario</h2>
-{{/if}}
-{{#if role}}
-    <form action="" id="formulario-baja" data-id="{{id}}">
-        <button id="btn-enviar">DARSE DE BAJA</button>
-    </form>
-{{else}}
-    <form action="/api/sessions/{{id}}/documents" method="POST" enctype="multipart/form-data" id="formulario" data-id="{{id}}">
-        <input type="file" name="profile" id="profileFile" accept="image/*"required>
-        <input type="file" name="product" id="productFile" accept="image/*" required>
-        <input type="file" name="document" id="documentFile" multiple required>
-        <button id="btn-enviar">ENVIAR</button>
-    </form>
+    {{#if role}}
+        <h2>¡Felicitaciones ya sos PREMIUM!</h2>
+        <a href="/realtimeproducts">Publica tus productos</a>
+        <form action="" id="formulario-baja" data-id="{{id}}">
+            <button id="btn-enviar">DARSE DE BAJA</button>
+        </form>
+    {{else}}
+        <h2>Pasate a Premium completando el formulario</h2>
+        <form action="/api/sessions/{{id}}/documents" method="POST" enctype="multipart/form-data" id="formulario" data-id="{{id}}">
+            <input type="file" name="profile" id="profileFile" accept="image/*"required>
+            <input type="file" name="product" id="productFile" accept="image/*" required>
+            <input type="file" name="document" id="documentFile" multiple required>
+            <button id="btn-enviar">ENVIAR</button>
+        </form>
+    {{/if}}
 {{/if}}
 {{!-- <form action="/upload-file" method="POST" enctype="multipart/form-data" id="formulario">
     <input type="file" name="myFile" id="myFile">

@@ -10,6 +10,7 @@ class UserRepository{
         const newUser = new UserDto(user)
         return await this.dao.createUser(newUser)
     }
+    deleteUser = async id => await this.dao.deleteUser(id)
 }
 
 module.exports = UserRepository

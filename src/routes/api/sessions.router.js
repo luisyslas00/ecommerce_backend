@@ -48,7 +48,7 @@ router.post('/resetpassword',resetPassword)
 router.post('/resetpassword/:token',resetPasswordPass)
 
 //Actualizar rol
-router.post('/premium/:uid',changeUserRole);
+router.post('/premium/:uid',extractUserInfo,changeUserRole);
 
 //
 router.post('/:uid/documents',uploader.any(),uploadFiles)

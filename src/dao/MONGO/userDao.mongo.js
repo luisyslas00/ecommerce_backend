@@ -13,6 +13,10 @@ class UserDaoMongo{
     async getUser(filter){
         return await this.usersModel.findOne(filter)
     }
+    async deleteUser(id){
+        const result = await this.usersModel.deleteOne({_id:id})
+        return result
+    }
 }
 
 module.exports = UserDaoMongo

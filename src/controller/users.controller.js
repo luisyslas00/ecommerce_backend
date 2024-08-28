@@ -6,6 +6,8 @@ const { generateToken, generateTokenPass } = require("../utils/jwt.js")
 const {private_key,port} = objectConfig
 const jwt = require('jsonwebtoken');
 const { sendEmail } = require("../utils/sendMail.js")
+const { usersModel } = require("../dao/MONGO/models/users.model.js")
+
 
 class userController {
     constructor(){
@@ -150,22 +152,24 @@ class userController {
                 user.documents = []
             }
             await user.save();
-            if(req.cookies["token"]){
-                const token = generateToken({
-                    _id:user._id,
-                    email:user.email,
-                    first_name: user.first_name,
-                    last_name: user.last_name,
-                    role:user.role,
-                    cartID:user.cartID
-                })
-                res.cookie('token',token,{
-                    maxAge:60*60*1000*24,
-                    httpOnly:true
-                })
-            }
-            if(req.session?.user){
-                req.session.user.role = user.role
+            if(req.user.role !=='admin'){
+                if(req.cookies["token"]){
+                    const token = generateToken({
+                        _id:user._id,
+                        email:user.email,
+                        first_name: user.first_name,
+                        last_name: user.last_name,
+                        role:user.role,
+                        cartID:user.cartID
+                    })
+                    res.cookie('token',token,{
+                        maxAge:60*60*1000*24,
+                        httpOnly:true
+                    })
+                }
+                if(req.session?.user){
+                    req.session.user.role = user.role
+                }
             }
             return res.status(200).send({status:"success",message:"Rol actualizado"});
         } catch (error) {
@@ -196,6 +200,49 @@ class userController {
             res.status(200).json({ status: 'success', message: 'Documents uploaded successfully' });
         } catch (error) {
             res.status(500).json({ status: 'failed', error: error.message });
+        }
+    }
+    getUsers = async(req,res)=>{
+        try {
+            const users = await this.userService.getUsers()
+            let usersDB = []
+            users.forEach(element => {
+                const user = new UserDtoDB(element)
+                usersDB.push(user)
+            });
+            res.send({status:'success',message:usersDB})
+        } catch (error) {
+            
+        }
+    }
+    deleteUsers = async(req,res)=>{
+        // try {
+        //     const result = await this.userService.deleteUser(uid)
+        // } catch (error) {
+            
+        // }
+        try {
+            const threshold = new Date(Date.now() - 2 * 24 * 60 * 60 * 1000);
+            const inactiveUsers = await usersModel.find({ last_connection: { $lt: threshold } });
+            console.log(inactiveUsers)
+            if (inactiveUsers.length === 0) {
+                return res.status(200).json({ message: 'No hay usuarios inactivos para eliminar.' });
+            }
+            const deletePromises = inactiveUsers.map(async user => {
+                if(user.role !== 'admin'){
+                    let html =`<p>Hola ${user.fullname || user.first_name},</p>
+                       <p>Tu cuenta ha sido eliminada debido a la inactividad de más de 2 horas.</p>`
+                    sendEmail({userMail:user.email,subject:`Cuenta eliminada por inactividad`,html})
+                    return this.userService.deleteUser({ _id: user._id });
+                }
+            });
+    
+            await Promise.all(deletePromises);
+    
+            res.status(200).json({ message: `Se han eliminado ${inactiveUsers.length} usuarios inactivos y se les ha enviado un correo de notificación.` });
+        } catch (error) {
+            console.error('Error al eliminar usuarios inactivos:', error);
+            res.status(500).json({ message: 'Error interno del servidor.' });
         }
     }
 }
