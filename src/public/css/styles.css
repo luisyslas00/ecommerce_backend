@@ -353,3 +353,8 @@
     font-size: 1.2em;
     font-weight: bold;
 }
+
+.card-premium{
+    background-color: black;
+    color: white;
+}

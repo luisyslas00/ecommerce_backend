@@ -15,6 +15,7 @@ const { productSocket } = require('./utils/productSocket.js')
 const { addLogger } = require('./middleware/logger.middleware.js')
 const swaggerJSDoc = require('swagger-jsdoc')
 const swaggerUIExpress = require('swagger-ui-express')
+const { userSocket } = require('./utils/userSocket.js')
 const {port,session_secret,mongo_url} = objectConfig
 
 
@@ -91,3 +92,4 @@ const httpServer = app.listen(port,error=>{
 const io = new Server(httpServer)
 
 productSocket(io)
+userSocket(io)
