@@ -358,3 +358,74 @@
     background-color: black;
     color: white;
 }
+
+.main-chat {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.chat-container {
+    width: 400px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.chat-header {
+    background-color: #007bff;
+    color: #ffffff;
+    padding: 10px;
+    text-align: center;
+}
+
+.chat-messages {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    background-color: #f9f9f9;
+    max-height: 300px;
+    min-height: 300px;
+}
+
+.chat-input-container {
+    display: flex;
+    border-top: 1px solid #ddd;
+}
+
+.chat-input {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 0;
+    font-size: 16px;
+}
+
+.chat-send-button {
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.chat-send-button:hover {
+    background-color: #0056b3;
+}
+
+.container-message{
+    background-color: #daecff;
+}
+
+.message-user{
+    font-size: 10px;
+}

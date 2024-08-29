@@ -33,10 +33,11 @@ router.post('/upload-file',uploader.single('myFile'),(req,res)=>{
     res.render('successFile')
 })
 
-router.get("/chat",auth(["user","premium"]),extractUserInfo,async(req,res)=>{
+router.get("/chat",auth(["user","premium","admin"]),extractUserInfo,async(req,res)=>{
     try{
         let userDb = req.user?.fullname || req.user?.first_name
         let cartDB = req.user?.cartID
+        let userEmail = req.user?.email
         const messages = await messageManager.getMessages()
         res.render("chat",{
             title:'Chat | Tienda',
@@ -45,6 +46,7 @@ router.get("/chat",auth(["user","premium"]),extractUserInfo,async(req,res)=>{
             styles:'styles.css',
             cartID:cartDB,
             user:userDb,
+            email:userEmail
         })
     }
     catch(error){

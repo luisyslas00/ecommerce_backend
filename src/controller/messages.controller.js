@@ -8,7 +8,7 @@ class messageController {
         try {
             const mensaje = req.body; 
             await this.messageService.sendMessage(mensaje)
-            res.send("Mensaje enviado")
+            res.send({status:'success',result:mensaje})
         } catch (error) {
             req.logger.error('Error al enviar el mensaje')
         }

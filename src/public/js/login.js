@@ -35,3 +35,4 @@ document.getElementById('formulario').addEventListener('submit', async function(
         responseDiv.style.color = 'red';
     }
 });
+
