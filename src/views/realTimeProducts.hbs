@@ -1,24 +1,25 @@
-<main>
-    <h2>Productos con websocket</h2>
-    <h3>Agregar producto</h3>
-    <form action="" id="formulario">
-        <label for="name">Ingrese el nombre del producto</label>
-        <input type="text" name="name" id="name" required>
-        <label for="description">Ingrese una descripción del producto</label>
-        <input type="text" name="description" id="description" required>
-        <label for="price">Ingrese el precio</label>
-        <input type="number" name="price" id="price" required>
-        <label for="thumbnail">Ingrese una imagen del producto (link)</label>
-        <input type="text" name="thumbnail" id="thumbnail" required>
-        <label for="code">Ingrese el código del producto</label>
-        <input type="text" name="code" id="code" required>
-        <label for="stock">Ingrese el stock del producto</label>
-        <input type="number" name="stock" id="stock" required>
-        <label for="category">Ingrese la categoria del producto</label>
-        <input type="string" name="category" id="category" required>
-        <input type="submit">
-    </form>
-    <h2>Bienvenido: <span id="userEmail">{{userEmail}}</span></h2>
+<main class="main-realtimeproductss">
+    <h1 class="title">Agregar productos a la tienda</h1>
+    <div class='div-form-realtimeproducts'>
+        <form class="form-realtimeproducts" id="formulario">
+            <label class="label-rtm" for="name">Ingrese el nombre del producto</label>
+            <input class="input-rtm" type="text" name="name" id="name" required>
+            <label class="label-rtm" for="description">Ingrese una descripción del producto</label>
+            <input class="input-rtm" type="text" name="description" id="description" required>
+            <label class="label-rtm" for="price">Ingrese el precio</label>
+            <input class="input-rtm" type="number" name="price" id="price" required>
+            <label class="label-rtm" for="thumbnail">Ingrese una imagen del producto (link)</label>
+            <input class="input-rtm" type="text" name="thumbnail" id="thumbnail" required>
+            <label class="label-rtm" for="code">Ingrese el código del producto</label>
+            <input class="input-rtm" type="text" name="code" id="code" required>
+            <label class="label-rtm" for="stock">Ingrese el stock del producto</label>
+            <input class="input-rtm" type="number" name="stock" id="stock" required>
+            <label class="label-rtm" for="category">Ingrese la categoria del producto</label>
+            <input class="input-rtm" type="string" name="category" id="category" required>
+            <input type="submit" class="btn-enviar-realtimeproducts">
+        </form>
+    </div>
+    <h2 class="userEmail">Bienvenido: <span id="userEmail">{{userEmail}}</span></h2>
     <div id="products">
         {{!-- lista productos --}}
     </div>
@@ -30,6 +31,8 @@
         <a href="/realtimeproducts?newPage={{nextPage}}">Siguiente</a>
     {{/if}}
 </main>
+{{!-- Script SweetAlert --}}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 {{!-- Script para extraer del node modules --}}
 <script src="/socket.io/socket.io.js"></script>
 {{!-- Script para traer el archivo de mi js --}}

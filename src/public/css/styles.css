@@ -85,7 +85,7 @@
 
 #products{
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     justify-content: center;
 }
@@ -93,6 +93,7 @@
 .product_admin{
     display: flex;
     justify-content: space-between;
+    align-items: center;
     width: 80%;
     margin-top: 1em;
     padding:0.5em;
@@ -231,7 +232,40 @@
     text-align: center;
 }
 
-/* Formulario */
+/* Formulario Login y Register*/
+
+.resetPassword {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 14px;
+    color: #555;
+}
+
+.resetPassword a {
+    color: #007BFF;
+    text-decoration: none;
+}
+
+.resetPassword a:hover {
+    text-decoration: underline;
+}
+
+.section_register_here {
+    text-align: center;
+    margin-top: 30px;
+    font-size: 16px;
+    color: #333;
+}
+
+.section_register_here a {
+    color: #28a745;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.section_register_here a:hover {
+    text-decoration: underline;
+}
 
 .main_login{
     display: flex;
@@ -252,12 +286,30 @@
     width: 400px;
     background: #bababa;  
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     padding: 30px 50px;
     margin: 1.5em;
     border-radius: 4px;
     box-shadow: 0 15px 35px rgba(0,0,0,9);
+}
+
+.section_login {
+    text-align: center;
+    margin-top: 30px;
+    font-size: 16px;
+    color: #333;
+}
+
+.section_login a {
+    color: #007BFF;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.section_login a:hover {
+    text-decoration: underline;
 }
 
 .content{
@@ -316,23 +368,12 @@
     margin-top: 20px;
 }
 
+.submitButton:hover{
+    background: rgb(47, 144, 47);
+}
+
 #response{
     height: 1em;
-}
-
-.btn-github{
-    background-color: gray;
-    color: white;
-    cursor: pointer;
-    padding: 0;
-    background-color: #000;
-}
-
-.btn-github a{
-    color: white;
-    padding: 1em;
-    margin-top: 2em;
-    text-decoration: none;
 }
 
 .card {
@@ -391,7 +432,6 @@
     flex: 1;
     padding: 15px;
     overflow-y: auto;
-    background-color: #f9f9f9;
     max-height: 300px;
     min-height: 300px;
 }
@@ -422,10 +462,411 @@
     background-color: #0056b3;
 }
 
-.container-message{
-    background-color: #daecff;
-}
-
 .message-user{
     font-size: 10px;
+}
+
+.btn-github {
+    margin-top: 10px;
+    text-align: center;
+    width: 100%;
+}
+
+.github-button {
+    display: inline-block;
+    background-color: #333;
+    color: #fff;
+    padding: 15px 0px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 16px;
+    width: 100%;
+}
+
+.github-button:hover {
+    background-color: #444;
+}
+
+.github-button i {
+    margin-right: 8px;
+}
+
+/* Formulario realtimeproducts */
+
+.main-realtimeproducts {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    max-width: 90%;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-realtimeproducts {
+    display: flex;
+    flex-direction: column;
+    max-width: 500px;
+    margin: auto;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 1.5em;
+    margin-bottom: 1.5em;
+}
+
+/* input[type="text"],
+input[type="number"],
+input[type="string"] {
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+input[type="submit"] {
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+}
+
+input[type="submit"]:hover {
+    background-color: #45a049;
+} */
+
+#products {
+    margin-top: 20px;
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    flex-wrap: wrap;
+}
+/* 
+a {
+    color: #4CAF50;
+    text-decoration: none;
+    font-weight: bold;
+    margin: 0 10px;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+p {
+    text-align: center;
+    font-size: 1em;
+    margin: 20px 0;
+    color: #555;
+} */
+ .userEmail{
+    text-align: center;
+ }
+
+#userEmail {
+    color: #4CAF50;
+    font-weight: bold;
+}
+
+.product-container {
+    background-color: #fff;
+    padding: 15px;
+    margin: 1em;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    max-width: 300px;
+}
+
+.product-container p {
+    margin: 5px 0;
+    color: #333;
+    font-size: 1em;
+}
+
+.product-container p:nth-child(2) {
+    font-weight: bold;
+    color: #4CAF50;
+    font-size: 1.2em;
+}
+
+.product-container p:nth-child(3) {
+    color: #888;
+    font-size: 0.9em;
+}
+
+.product-container button {
+    padding: 10px 15px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+
+.deleteActivate:hover {
+    background-color: #e60000;
+}
+
+.product-owner{
+    background-color: yellow;
+    padding: 0.5em;
+    text-transform: uppercase;
+}
+
+.div-form-realtimeproducts{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.input-rtm{
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.titulo-rtm{
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+    margin-top: 1em;
+}
+
+.subtitulo-rtm{
+    color: #555;
+    margin-bottom: 15px;
+    font-size: 1.2em;
+}
+
+.btn-enviar-realtimeproducts{
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.openFormModal{
+    display: inline-block;
+    height: 50px;
+    width: 176px;
+    box-sizing: border-box;
+    border: transparent;
+    border-radius: 5px;
+    font-family: 'Raleway', sans-serif;
+    font-size: 1em;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: #ffffff;
+    background-color: rgb(0, 110, 255);
+    cursor: pointer;
+    outline: none;
+}
+
+.notModal{
+    display: inline-block;
+    height: 50px;
+    width: 176px;
+    box-sizing: border-box;
+    border: transparent;
+    border-radius: 5px;
+    font-family: 'Raleway', sans-serif;
+    font-size: 1em;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: #ffffff;
+    background-color: rgb(139, 139, 139);
+    cursor: none;
+    outline: none;
+}
+
+.deleteDesactivate{
+    background-color: rgb(139, 139, 139);
+}
+
+.openFormModal:hover{
+    background-color:rgb(0, 76, 175);
+}
+
+/* Profile */
+.btn-profile {
+    display: inline-block;
+    margin: 10px 0;
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: white;
+    background-color: #007BFF;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-profile:hover {
+    background-color: #0056b3;
+}
+
+.form-actualizarProducto{
+    display: flex;
+    flex-direction: column;
+    max-width: 300px;
+    margin: auto;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 1.5em;
+    margin-bottom: 1.5em;
+}
+
+/* RESET PASSWORD */
+
+.title {
+    text-align: center;
+    font-size: 24px;
+    color: #333;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.formResetPassword {
+    display: inline-block;
+    text-align: left;
+    width: 300px;
+    margin: 0 auto;
+}
+
+.response_resetPassword {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #ff0000;
+    text-align: center;
+}
+
+.section_formResetPassword{
+    margin: auto;
+    max-width: 500px;
+    background-color: rgb(206, 206, 206);
+    padding: 1em;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* PROFILE */
+.subtitle_profile {
+    text-align: center;
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Estilo para los botones de perfil */
+.btn-profile {
+    display: block;
+    width: 200px;
+    margin: 10px auto;
+    padding: 10px;
+    background-color: #007BFF;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+}
+
+.btn-profile:hover {
+    background-color: #0056b3;
+}
+
+/* Estilo para el botón de baja */
+.btn-baja {
+    background-color: #dc3545;
+}
+
+.btn-baja:hover {
+    background-color: #c82333;
+}
+
+/* Estilo para el formulario de baja */
+.form-baja {
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* Estilo para el formulario de carga de archivos */
+
+.main_profile{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.formUpload {
+    text-align: center;
+    margin-top: 20px;
+    max-width: 400px;
+    padding: 1em;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo para el formulario */
+.formUpload form {
+    display: inline-block;
+    text-align: left;
+    width: 300px;
+    margin: 0 auto;
+}
+
+/* Estilo para los campos de entrada de archivos */
+.formUpload input[type="file"] {
+    display: block;
+    margin: 10px auto;
+    padding: 5px;
+    font-size: 14px;
+    width: 100%;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+/* Estilo para el botón de envío */
+.btn-upload {
+    display: block;
+    width: 100%;
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #28a745;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.btn-upload:hover {
+    background-color: #218838;
 }

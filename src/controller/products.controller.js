@@ -2,6 +2,7 @@ const CustomError = require("../service/errors/CustomError.js")
 const EErrors = require("../service/errors/enum.js")
 const { productService } = require("../service/index.js")
 const { objectConfig } = require("../config/config.js")
+const { sendEmail } = require("../utils/sendMail.js")
 const {private_key} = objectConfig
 
 class productController {
@@ -67,6 +68,15 @@ class productController {
             if(req.user.role==="admin"){
                 const result = await this.productService.deleteProduct(pid)
                 if(result.status === 'failed') return res.send(result)
+                if(productFound.owner !== 'admin'){
+                    let html =`<p>Hola!</p>
+                       <p>Su producto fue eliminado de nuestra tienda.</p>
+                       <p>Producto: ${productFound.title}</p>
+                       <p>Precio: $${productFound.price}</p>
+                       <p>Stock: ${productFound.stock}</p>
+                       `
+                    sendEmail({userMail:productFound.owner,subject:`Producto eliminado`,html})
+                }
                 return res.send({status:'success',payload:result})
             }
             if(productFound.owner !== req.user.email) return res.send({status:"error",message:"Producto no corresponde al usuario"})

@@ -89,7 +89,6 @@ class userController {
                 }
             })
             if(req.cookies["token"]){
-                console.log(req.user)
                 res.clearCookie('token')
             }
         } catch (error) {
@@ -200,6 +199,7 @@ class userController {
             res.status(200).json({ status: 'success', message: 'Documents uploaded successfully' });
         } catch (error) {
             res.status(500).json({ status: 'failed', error: error.message });
+            req.logger.error('Error al subir archivos')
         }
     }
     getUsers = async(req,res)=>{
@@ -212,26 +212,20 @@ class userController {
             });
             res.send({status:'success',message:usersDB})
         } catch (error) {
-            
+            req.logger.error('Error al obetener usuarios')
         }
     }
     deleteUsers = async(req,res)=>{
-        // try {
-        //     const result = await this.userService.deleteUser(uid)
-        // } catch (error) {
-            
-        // }
         try {
             const threshold = new Date(Date.now() - 2 * 24 * 60 * 60 * 1000);
             const inactiveUsers = await usersModel.find({ last_connection: { $lt: threshold } });
-            console.log(inactiveUsers)
             if (inactiveUsers.length === 0) {
                 return res.status(200).json({ message: 'No hay usuarios inactivos para eliminar.' });
             }
             const deletePromises = inactiveUsers.map(async user => {
                 if(user.role !== 'admin'){
                     let html =`<p>Hola ${user.fullname || user.first_name},</p>
-                       <p>Tu cuenta ha sido eliminada debido a la inactividad de más de 2 horas.</p>`
+                       <p>Tu cuenta ha sido eliminada debido a la inactividad de más de 2 días.</p>`
                     sendEmail({userMail:user.email,subject:`Cuenta eliminada por inactividad`,html})
                     return this.userService.deleteUser({ _id: user._id });
                 }
@@ -239,10 +233,10 @@ class userController {
     
             await Promise.all(deletePromises);
     
-            res.status(200).json({ message: `Se han eliminado ${inactiveUsers.length} usuarios inactivos y se les ha enviado un correo de notificación.` });
+            res.status(200).json({ message: `Se ha/n eliminado ${inactiveUsers.length} usuario/s inactivo/s y se le/s ha enviado un correo de notificación.` });
         } catch (error) {
-            console.error('Error al eliminar usuarios inactivos:', error);
             res.status(500).json({ message: 'Error interno del servidor.' });
+            req.logger.error('Error al borrar usuarios')
         }
     }
 }

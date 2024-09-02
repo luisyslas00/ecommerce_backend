@@ -30,7 +30,16 @@ const eliminarButton = document.getElementById('btn-eliminar');
             return response.json();
         })
         .then(data => {
-            alert(data.message); // Muestra un mensaje de confirmación al usuario
+            Toastify({
+                text: data.message,
+                duration: 5000,
+                newWindow: true,
+                gravity: "top", 
+                position: "right",
+                style: {
+                  background: "red",
+                }
+            }).showToast();
             socket.emit("nuevaLista")
             socket.on('listaActualizada',async(data)=>{
                 const usersDB = data
