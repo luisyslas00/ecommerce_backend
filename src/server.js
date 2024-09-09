@@ -36,6 +36,7 @@ const swaggerOptions = {
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 app.use(express.static(__dirname+'/public'))
+
 //Cookie Parser
 app.use(cookieParser())
 // app.use(session({

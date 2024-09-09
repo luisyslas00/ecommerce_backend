@@ -11,8 +11,6 @@ const checkAuth = (req, res, next) => {
     }
     if(token){
         try {
-            console.log('Estoy en Token')
-            console.log(token)
             const decoded = jwt.verify(token, private_key)
             const user = new UserDtoDB(decoded)
             req.user = user;

@@ -1,21 +1,21 @@
 <main class="main-realtimeproductss">
     <h1 class="title">Agregar productos a la tienda</h1>
     <div class='div-form-realtimeproducts'>
-        <form class="form-realtimeproducts" id="formulario">
+        <form class="form-realtimeproducts" id="formulario" data-id="{{userID}}" enctype="multipart/form-data">
             <label class="label-rtm" for="name">Ingrese el nombre del producto</label>
             <input class="input-rtm" type="text" name="name" id="name" required>
             <label class="label-rtm" for="description">Ingrese una descripción del producto</label>
             <input class="input-rtm" type="text" name="description" id="description" required>
             <label class="label-rtm" for="price">Ingrese el precio</label>
             <input class="input-rtm" type="number" name="price" id="price" required>
-            <label class="label-rtm" for="thumbnail">Ingrese una imagen del producto (link)</label>
-            <input class="input-rtm" type="text" name="thumbnail" id="thumbnail" required>
+            <label class="label-rtm" for="product">Imagen de Producto</label>
+            <input class="input-rtm" type="file" name="product" id="productFile" accept="image/*" >
             <label class="label-rtm" for="code">Ingrese el código del producto</label>
             <input class="input-rtm" type="text" name="code" id="code" required>
             <label class="label-rtm" for="stock">Ingrese el stock del producto</label>
             <input class="input-rtm" type="number" name="stock" id="stock" required>
             <label class="label-rtm" for="category">Ingrese la categoria del producto</label>
-            <input class="input-rtm" type="string" name="category" id="category" required>
+            <input class="input-rtm" type="text" name="category" id="category" required>
             <input type="submit" class="btn-enviar-realtimeproducts">
         </form>
     </div>

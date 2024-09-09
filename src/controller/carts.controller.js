@@ -42,7 +42,6 @@ class cartController {
                 return res.status(403).send({ status: "failed", message: "No puedes agregar tu propio producto al carrito" });
             }
             const result = await this.cartService.addProduct(cid,pid)
-            // if(result.status==="failed") return res.send(result)
             res.send({status:"success",payload:result})
         }
         catch(error){

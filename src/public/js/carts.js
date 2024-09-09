@@ -17,15 +17,41 @@ document.addEventListener('DOMContentLoaded', ()=>{
                         throw new Error(`HTTP error! status: ${response.status}`);
                     }
                     const result = await response.json();
-                    console.log(result)
                     if (result.status === "success") {
-                        alert('Producto agregado al carrito');
+                        Toastify({
+                            text: 'Producto agregado al carrito!',
+                            duration: 5000,
+                            newWindow: true,
+                            gravity: "top", 
+                            position: "right",
+                            style: {
+                              background: "green",
+                            }
+                        }).showToast();
                     } else {
-                        alert('Error al agregar el producto al carrito');
+                        Toastify({
+                            text: 'Error al agregar el producto',
+                            duration: 5000,
+                            newWindow: true,
+                            gravity: "top", 
+                            position: "right",
+                            style: {
+                              background: "red",
+                            }
+                        }).showToast();
                     }
                 } catch (error) {
                     console.error('Error caught:', error);
-                    alert('Ocurrió un error al agregar el producto al carrito');
+                    Toastify({
+                        text: 'No puedes agregar productos propios',
+                        duration: 5000,
+                        newWindow: true,
+                        gravity: "top", 
+                        position: "right",
+                        style: {
+                          background: "red",
+                        }
+                    }).showToast();
                 }
             });
         });

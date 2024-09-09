@@ -7,6 +7,7 @@ class UserDto{
         this.password = user.password
         this.fullname = `${user.first_name} ${user.last_name}`
         this.cartID = user.cartID
+        this.documents = user.documents
     }
 }
 

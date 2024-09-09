@@ -114,12 +114,15 @@ router.get('/realtimeproducts',auth(["admin","premium"]),extractUserInfo,async(r
     try{
         let userDb = req.user?.fullname || req.user?.first_name
         let cartDB = req.user?.cartID
+        let userID = req.user?._id
+        console.log(userID)
         let userEmail = req.user?.email
         res.render('realTimeProducts',{
             styles:'styles.css',
             cartID:cartDB,
             user:userDb,
-            userEmail:userEmail
+            userEmail:userEmail,
+            userID
         })
     }
     catch(error){
@@ -162,13 +165,20 @@ router.get('/profile',auth(["admin","premium","user"]),extractUserInfo,async(req
     let userDb = req.user?.fullname || req.user?.first_name
     let cartDB = req.user?.cartID
     let role = req.user?.role
+    const profileDocument = req.user?.documents?.find(doc => doc.name === 'profile');
+    let imageProfile
+    console.log(req.user)
+    if(profileDocument){
+        imageProfile = profileDocument.reference
+    }
     res.render('profile',{
         styles:'styles.css',
         cartID:cartDB,
         user:userDb,
         id:req.user?._id,
         role:role==='premium',
-        admin:role==='admin'
+        admin:role==='admin',
+        imageProfile
     })
 })
 

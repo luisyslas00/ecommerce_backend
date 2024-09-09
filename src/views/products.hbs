@@ -6,6 +6,7 @@
                 {{#each products}}
                     <div class="card_product">
                         <p class="product_name">{{this.title}}</p>
+                        <img class="img_product" src="{{this.thumbnail}}">
                         <p class="product_price">${{this.price}}</p>
                         <p>Stock: {{this.stock}}</p>
                         {{#if this.stock}}

@@ -6,23 +6,53 @@
         <a class="btn-profile" href="/realtimeproducts">Publicar productos</a>
     {{else}}
         {{#if role}}
-            <h2 class="subtitle_profile">¡Felicitaciones ya sos PREMIUM!</h2>
-            <a class="btn-profile" href="/realtimeproducts">Publica tus productos</a>
-            <form class="form-baja" action="" id="formulario-baja" data-id="{{id}}">
-                <input class=" btn-profile btn-baja" id="btn-enviar" type="submit" value="DARSE DE BAJA">
-            </form>
+            <div class="profile_container">
+                <div class="avatar_container">
+                    {{#if imageProfile}}
+                        <img src="{{imageProfile}}" alt="Foto de perfil" class="profile-picture">
+                    {{else}}
+                        <form action="/api/sessions/{{id}}/documents" method="POST" enctype="multipart/form-data" id="formulario_profile" data-id="{{id}}">
+                            <label for="profile">Foto de perfil</label>
+                            <input type="file" name="profile" id="profileFile" accept="image/*" required>
+                            <input class="btn-profile btn-upload" id="btn-enviar" type="submit">
+                        </form>
+                    {{/if}}
+                </div>
+                <div class="options_profile">
+                    <h2 class="subtitle_profile">¡Felicitaciones ya sos PREMIUM!</h2>
+                    <a class="btn-profile" href="/realtimeproducts">Publica tus productos</a>
+                    <form class="form-baja" action="" id="formulario-baja" data-id="{{id}}">
+                        <input class=" btn-profile btn-baja" id="btn-enviar" type="submit" value="DARSE DE BAJA">
+                    </form>
+                </div>
+            </div>
         {{else}}
-            <h2 class="subtitle_profile">Pasate a Premium completando el formulario</h2>
-            <div class="formUpload">
-                <form action="/api/sessions/{{id}}/documents" method="POST" enctype="multipart/form-data" id="formulario" data-id="{{id}}">
-                    <label for="profile">Foto de perfil</label>
-                    <input type="file" name="profile" id="profileFile" accept="image/*">
-                    <label for="product">Imagen de Producto</label>
-                    <input type="file" name="product" id="productFile" accept="image/*" >
-                    <label for="document">Documentación</label>
-                    <input type="file" name="document" id="documentFile" multiple required>
-                    <input class="btn-profile btn-upload" id="btn-enviar" type="submit">
-                </form>
+            <div class="profile_container">
+                <div class="avatar_container">
+                    {{#if imageProfile}}
+                        <img src="{{imageProfile}}" alt="Foto de perfil" class="profile-picture">
+                    {{else}}
+                        <form action="/api/sessions/{{id}}/documents" method="POST" enctype="multipart/form-data" id="formulario_profile" data-id="{{id}}">
+                            <label for="profile">Foto de perfil</label>
+                            <input type="file" name="profile" id="profileFile" accept="image/*" required>
+                            <input class="btn-profile btn-upload" id="btn-enviar" type="submit">
+                        </form>
+                    {{/if}}
+                </div>
+                <div class="options profile">
+                    <h2 class="subtitle_profile">Pasate a Premium completando el formulario</h2>
+                    <div class="formUpload">
+                        <form action="/api/sessions/{{id}}/documents" method="POST" enctype="multipart/form-data" id="formulario" data-id="{{id}}">
+                            {{!-- <label for="profile">Foto de perfil</label>
+                            <input type="file" name="profile" id="profileFile" accept="image/*">
+                            <label for="product">Imagen de Producto</label>
+                            <input type="file" name="product" id="productFile" accept="image/*" > --}}
+                            <label for="document">Documentación</label>
+                            <input type="file" name="document" id="documentFile" multiple required>
+                            <input class="btn-profile btn-upload" id="btn-enviar" type="submit">
+                        </form>
+                    </div>
+                </div>
             </div>
         {{/if}}
     {{/if}}

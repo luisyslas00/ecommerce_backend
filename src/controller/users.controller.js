@@ -3,7 +3,7 @@ const { UserDtoDB } = require("../dtos/userDB.dto.js")
 const { userService, cartService } = require("../service/index.js")
 const { createHash, isValidPassword } = require("../utils/bcrypt.js")
 const { generateToken, generateTokenPass } = require("../utils/jwt.js")
-const {private_key,port} = objectConfig
+const {private_key} = objectConfig
 const jwt = require('jsonwebtoken');
 const { sendEmail } = require("../utils/sendMail.js")
 const { usersModel } = require("../dao/MONGO/models/users.model.js")
@@ -33,16 +33,6 @@ class userController {
                 password: createHash(password)
             }
             const result = await this.userService.createUser(newUser)
-            // const token = generateToken({
-            //     email,
-            //     id:result._id,
-            //     first_name,
-            //     last_name
-            // })
-            // res.cookie('token',token,{
-            //     maxAge:60*60*1000*24,
-            //     httpOnly:true
-            // })
             res.send({status:'success',message:'Usuario registrado'})
         } catch (error) {
             req.logger.error('Error al registrarse')
@@ -61,7 +51,8 @@ class userController {
                 first_name: userFound.first_name,
                 last_name: userFound.last_name,
                 role:userFound.role,
-                cartID:userFound.cartID
+                cartID:userFound.cartID,
+                documents:userFound.documents
             })
             userFound.last_connection = new Date();
             await userFound.save();
@@ -110,7 +101,6 @@ class userController {
                 email:userFound.email,
                 id:userFound._id
             })
-            console.log(token)
             const resetLink = `http://${req.headers.host}/resetpassword/${token}`;
             const html = `<h1>Resetea tu contraseña <a href='${resetLink}'>AQUÍ</a></h1>`
             sendEmail({userMail:userFound.email,subject:`Reseteo password ${userFound.first_name}`,html})
@@ -146,9 +136,14 @@ class userController {
         try {
             const {uid} = req.params
             const user = await this.userService.getUser({'_id':uid})
-            user.role = user.role === 'user' ? 'premium' : 'user';
+            let documentsUser = user.documents.filter(doc=> doc.name === 'document')
+            if(documentsUser){
+                user.role = user.role === 'user' ? 'premium' : 'user';
+            }
             if(user.role === 'user'){
-                user.documents = []
+                const nameToDelete = 'document';
+                let documentsDB = user.documents.filter(doc => doc.name !== nameToDelete);
+                user.documents = documentsDB
             }
             await user.save();
             if(req.user.role !=='admin'){
@@ -159,7 +154,8 @@ class userController {
                         first_name: user.first_name,
                         last_name: user.last_name,
                         role:user.role,
-                        cartID:user.cartID
+                        cartID:user.cartID,
+                        documents:user.documents
                     })
                     res.cookie('token',token,{
                         maxAge:60*60*1000*24,
@@ -168,6 +164,7 @@ class userController {
                 }
                 if(req.session?.user){
                     req.session.user.role = user.role
+                    req.session.user.documents = user.documents
                 }
             }
             return res.status(200).send({status:"success",message:"Rol actualizado"});
@@ -179,24 +176,41 @@ class userController {
         try {
             const { uid } = req.params;
             const files = req.files;
-            
-            if (!files || files.length === 0 ||files.length < 3) {
+            if (!files || files.length === 0) {
                 return res.status(400).json({ status: 'failed', message: 'No files uploaded' });
             }
-    
             const documents = files.map(file => ({
                 name: file.fieldname,
-                reference: `/uploads/${file.fieldname}/${file.filename}`
+                reference: `/uploads/${file.fieldname}s/${file.filename}`
             }));
-
             const user = await this.userService.getUser({'_id':uid})
             if (!user) {
                 return res.status(404).json({ status: 'failed', message: 'User not found' });
             }
             user.documents.push(...documents)
+            if(req.user.role !=='admin'){
+                if(req.cookies["token"]){
+                    const token = generateToken({
+                        _id:user._id,
+                        email:user.email,
+                        first_name: user.first_name,
+                        last_name: user.last_name,
+                        role:user.role,
+                        cartID:user.cartID,
+                        documents:user.documents
+                    })
+                    console.log(token)
+                    res.cookie('token',token,{
+                        maxAge:60*60*1000*24,
+                        httpOnly:true
+                    })
+                }
+                if(req.session?.user){
+                    req.session.user.documents = user.documents
+                }
+            }
             await user.save()
-
-            res.status(200).json({ status: 'success', message: 'Documents uploaded successfully' });
+            res.status(200).json({ status: 'success', message: 'Documents uploaded successfully',result:documents});
         } catch (error) {
             res.status(500).json({ status: 'failed', error: error.message });
             req.logger.error('Error al subir archivos')

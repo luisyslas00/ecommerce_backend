@@ -2,6 +2,7 @@ const { Router } = require('express')
 const { productController } = require('../../controller/products.controller.js')
 const { auth } = require('../../middleware/auth.middleware.js')
 const { checkAuth } = require('../../middleware/checkAuthtoken.middleware.js')
+const { uploader } = require('../../middleware/multer.middleware.js')
 
 const router = Router()
 

@@ -58,7 +58,6 @@ class CartDaoMongo{
             }
         }
         const result = await this.cartsModel.findByIdAndUpdate({"_id":cid},cart)
-        console.log(result)
         return result
     }
     async endPurchase(cid){

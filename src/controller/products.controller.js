@@ -1,9 +1,6 @@
-const CustomError = require("../service/errors/CustomError.js")
-const EErrors = require("../service/errors/enum.js")
 const { productService } = require("../service/index.js")
 const { objectConfig } = require("../config/config.js")
 const { sendEmail } = require("../utils/sendMail.js")
-const {private_key} = objectConfig
 
 class productController {
     constructor(){

@@ -4,11 +4,12 @@ const socket = io()
 const nameProduct = document.getElementById('name')
 const descriptionProduct = document.getElementById('description')
 const priceProduct = document.getElementById('price')
-const thumbnailProduct = document.getElementById('thumbnail')
+const thumbnailProduct = document.getElementById('productFile')
 const codeProduct = document.getElementById('code')
 const stockProduct = document.getElementById('stock')
 const categoryProduct = document.getElementById('category')
 const formProduct = document.getElementById('formulario')
+const userId = formProduct.getAttribute('data-id');
 const productsContainer = document.getElementById('products')
 let userEmail = document.getElementById('userEmail').textContent
 
@@ -17,17 +18,40 @@ if(userEmail === 'adminCoder@coder.com'){
 }
 
 //Función formulario
+async function uploadImage(){
+    const formData = new FormData(formProduct)
+    try {
+        const response = await fetch(`/api/sessions/${userId}/documents`, {
+            method: 'POST',
+            body: formData
+        });
+        const result = await response.json();
+        console.log(result)
+        if (response.ok) {
+            console.log('Documents uploaded successfully');
+            console.log(result.result[0].reference)
+            return result.result[0].reference
+        } else {
+            alert(`Failed to upload documents: ${result.message}`);
+            // Puedes manejar errores aquí
+        }
+    } catch (error) {
+        alert('Error uploading documents');
+        console.error('Error:', error);
+    }
+}
 
-function enviarFormulario(){
+async function enviarFormulario(){
     const newProduct = {
         title:nameProduct.value,
         description:descriptionProduct.value,
         price:priceProduct.value,
-        thumbnail:thumbnailProduct.value,
         code:codeProduct.value,
         stock:stockProduct.value,
         category:categoryProduct.value
     }
+    const thumbnailDB = await uploadImage()
+    newProduct.thumbnail = thumbnailDB
     fetch('/api/products', {
         method: 'POST',
         headers: {
@@ -77,6 +101,7 @@ function actualizarListaProductos(productsDB){
         }
         containerProduct.innerHTML =`
         <p>${element.title}</p>
+        <img class="img_product" src="${element.thumbnail}">
         <p>$${element.price}</p>
         <p>Stock: ${element.stock = element.stock=== 0 ? 'Sin stock' : element.stock}</p>
         <p class="product-owner">${element.owner === "admin" ? 'Admin' : 'Usuario'}</p>
@@ -118,8 +143,6 @@ function actualizarListaProductos(productsDB){
                                 <input class="input-rtm" type="text" name="description" id="description" value='${element.description}' required>
                                 <label class="label-rtm" for="price">Ingrese el precio</label>
                                 <input class="input-rtm" type="number" name="price" id="price" value='${element.price}' required>
-                                <label class="label-rtm" for="thumbnail">Ingrese una imagen del producto (link)</label>
-                                <input class="input-rtm" type="text" name="thumbnail" id="thumbnail" value='${element.thumbnail}' required>
                                 <label class="label-rtm" for="code">Ingrese el código del producto</label>
                                 <input class="input-rtm" type="text" name="code" id="code" value='${element.code}' required>
                                 <label class="label-rtm" for="stock">Ingrese el stock del producto</label>
@@ -134,7 +157,6 @@ function actualizarListaProductos(productsDB){
                             const title = Swal.getPopup().querySelector('#name').value;
                             const description = Swal.getPopup().querySelector('#description').value;
                             const price = Swal.getPopup().querySelector('#price').value;
-                            const thumbnail = Swal.getPopup().querySelector('#thumbnail').value;
                             const code = Swal.getPopup().querySelector('#code').value;
                             const stock = Swal.getPopup().querySelector('#stock').value;
                             const category = Swal.getPopup().querySelector('#category').value;
@@ -142,12 +164,11 @@ function actualizarListaProductos(productsDB){
                                 title,
                                 description,
                                 price,
-                                thumbnail,
                                 code,
                                 stock,
                                 category   
                             }
-                            if (!title || !description || !price || !thumbnail || !code || !stock || !category) {
+                            if (!title || !description || !price || !code || !stock || !category) {
                                 Swal.showValidationMessage(`Por favor, complete todos los campos.`);
                             }
                             return newProduct;

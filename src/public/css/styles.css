@@ -81,6 +81,7 @@
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
+    padding: 1em;
 }
 
 #products{
@@ -781,6 +782,28 @@ p {
     margin-bottom: 20px;
 }
 
+.profile_container{
+    display: flex;
+}
+
+.avatar_container{
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 300px;
+    height: auto;
+    margin: 1em;
+    padding: 1em;
+}
+
+.profile-picture{
+    width: 100%;
+}
+
+.options_profile{
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 1em;
+    padding: 1em;
+}
+
 /* Estilo para los botones de perfil */
 .btn-profile {
     display: block;
@@ -869,4 +892,9 @@ p {
 
 .btn-upload:hover {
     background-color: #218838;
+}
+
+.img_product{
+    width: 200px;
+    height: auto;
 }

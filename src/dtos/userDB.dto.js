@@ -7,6 +7,7 @@ class UserDtoDB{
         this.fullname = `${user.first_name} ${user.last_name}`
         this.cartID = user.cartID
         this.role = user.role
+        this.documents = user.documents
     }
 }
 

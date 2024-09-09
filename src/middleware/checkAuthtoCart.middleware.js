@@ -15,14 +15,12 @@ const checkAuthtoCart = (req, res, next) => {
             const decoded = jwt.verify(token, private_key)
             const user = new UserDtoDB(decoded)
             req.user = user;
-            console.log(req.user)
         } catch (err) {
             return res.status(401).send({ status: 'failed', message: 'Invalid token' });
         }
     }
     if(req.session.user){
         req.user = req.session.user
-        console.log(req.user)
     }
     if (token && req.session.user) {
         return res.status(401).send({ status: 'failed', message: 'Sin datos' });

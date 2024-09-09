@@ -1,23 +1,5 @@
 const socket = io()
 
-// document.addEventListener('DOMContentLoaded',()=>{
-//     fetch('/api/users')
-//     .then(response => {
-//         if (!response.ok) {
-//             throw new Error('Error al traer los usuarios');
-//         }
-//             return response.json();
-//     })
-//     .then(data => {
-//         const users = data.message
-//        actualizarUsuarios(users)
-//     })
-//     .catch(error => {
-//         console.error('Error:', error);
-//     });
-// })
-
-
 const eliminarButton = document.getElementById('btn-eliminar');
     eliminarButton.addEventListener('click', () => {
         fetch('/api/users', {

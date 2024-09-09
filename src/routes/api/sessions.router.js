@@ -51,7 +51,7 @@ router.post('/resetpassword/:token',resetPasswordPass)
 router.post('/premium/:uid',extractUserInfo,changeUserRole);
 
 //
-router.post('/:uid/documents',uploader.any(),uploadFiles)
+router.post('/:uid/documents',uploader.any(),extractUserInfo,uploadFiles)
 
 module.exports = router
 
