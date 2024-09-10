@@ -20,9 +20,9 @@ document.addEventListener('DOMContentLoaded', ()=>{
                     if (result.status === "success") {
                         Toastify({
                             text: 'Producto agregado al carrito!',
-                            duration: 5000,
+                            duration: 1000,
                             newWindow: true,
-                            gravity: "top", 
+                            gravity: "bottom", 
                             position: "right",
                             style: {
                               background: "green",
@@ -31,9 +31,9 @@ document.addEventListener('DOMContentLoaded', ()=>{
                     } else {
                         Toastify({
                             text: 'Error al agregar el producto',
-                            duration: 5000,
+                            duration: 1000,
                             newWindow: true,
-                            gravity: "top", 
+                            gravity: "bottom", 
                             position: "right",
                             style: {
                               background: "red",
@@ -44,10 +44,10 @@ document.addEventListener('DOMContentLoaded', ()=>{
                     console.error('Error caught:', error);
                     Toastify({
                         text: 'No puedes agregar productos propios',
-                        duration: 5000,
+                        duration: 1000,
                         newWindow: true,
                         gravity: "top", 
-                        position: "right",
+                        position: "bottom",
                         style: {
                           background: "red",
                         }

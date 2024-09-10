@@ -81,6 +81,10 @@ router.get('/carts/:cid',auth(["user","premium"]),extractUserInfo,async(req,res)
     const {cid}=req.params
     const cart = await cartManager.getCart(cid)
     const products = cart.products
+    let total = 0
+    if(products.length>0){
+        total = products.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
+    }
     let userDb = req.user?.fullname || req.user?.first_name
     let cartDB = req.user?.cartID
     res.render("carts",{
@@ -88,7 +92,8 @@ router.get('/carts/:cid',auth(["user","premium"]),extractUserInfo,async(req,res)
         styles:'styles.css',
         cartID:cartDB,
         user:userDb,
-        productsExist:products?.length>0
+        productsExist:products?.length>0,
+        total
     })
 })
 

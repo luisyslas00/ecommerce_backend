@@ -35,12 +35,15 @@
             <li><a href="/chat" class="slide_down"href="">Contact</a></li>
         </ul>
         {{#if cartID}}
-        <a href="/carts/{{cartID}}" id="btn_cart" data-id="{{cartID}}"><i class="fa fa-shopping-cart"></i></a>
+        <a href="/carts/{{cartID}}" id="btn_cart" data-id="{{cartID}}"><i class="fa fa-shopping-cart icon_cart"></i></a>
         {{else}}
         <a href="/login" id="btn_cart"><i class="fa fa-shopping-cart"></i></a>
         {{/if}}
     </header>
     {{{body}}}
+    {{!-- Script SweetAlert --}}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    {{!-- Script Toastify --}}
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 </body>
 </html>

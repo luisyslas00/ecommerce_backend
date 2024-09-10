@@ -1,14 +1,20 @@
-<h1>Carrito</h1>
+<h1 class="title_cart">Carrito</h1>
 <div class="container_cart">
     {{#each products}}
         <div class="container_product_cart">
-            <p>Producto: {{this.product.title}}</p>
+            <p>{{this.product.title}}</p>
+            <img src="{{this.product.thumbnail}}">
             <p>${{this.product.price}}</p>
             <p>Cantidad:{{this.quantity}}</p>
+            <button class="btn_remove" data-id="{{this.product._id}}">Eliminar</button>
         </div>
     {{/each}}
     {{#if productsExist}}
+        <p class="totalPurchase">Total: ${{total}}</p>
         <button id="btn_purchase" data-id="{{cartID}}">Comprar</button>
+        <button id="btn_empty_cart" data-id="{{cartID}}">Vaciar Carrito</button>
+    {{else}}
+        <h2>No hay productos</h2>
     {{/if}}
 </div>
 <script src="/js/purchase.js"></script>
