@@ -185,10 +185,10 @@ function actualizarListaProductos(productsDB){
                             .then(response => response.json())
                             .then(data => {
                                 if (data.status === 'success') {
-                                    Swal.fire('Éxito', 'Producto actualizado correctamente', 'success');
-                                    setTimeout(() => {
-                                        window.location.href = '/realtimeproducts';
-                                    },5000);
+                                    Swal.fire('Éxito', 'Producto actualizado correctamente', 'success').then((result) => {
+                                        if (result.isConfirmed){
+                                            location.reload()
+                                        }});;
                                 } else {
                                     Swal.fire('Error', 'No se pudo actualizar el producto', 'error');
                                 }

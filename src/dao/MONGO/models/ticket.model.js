@@ -16,6 +16,9 @@ const ticketSchema = new Schema({
     purchaser: {
         type: String,
     },
+    products:{
+        type:Array
+    }
 });
 
 

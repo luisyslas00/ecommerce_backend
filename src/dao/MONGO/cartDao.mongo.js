@@ -61,31 +61,31 @@ class CartDaoMongo{
         return result
     }
     async endPurchase(cid){
-        const cart = await this.cartsModel.findById(cid);
+        return await this.cartsModel.findById(cid);
         //RESOLVER ESTO
-        let totalAmount = 0;
-        const productsToPurchase = [];
-        const productsNotPurchase = []
-        for (const item of cart.products) {
-            const product = item.product;
-            if(product.stock>=item.quantity){
-                product.stock -= item.quantity
-                totalAmount += item.quantity * product.price;
-                productsToPurchase.push(product);
-                product.save()
-            }else{
-                productsNotPurchase.push({product:product._id,quantity:item.quantity})
-            }
-        }
-        console.log("Productos comprados:",productsToPurchase)
-        console.log("Productos no comprados",productsNotPurchase)
-        await this.cartsModel.updateOne({ _id: cid }, { $set: { products: productsNotPurchase } })
-        if(productsToPurchase.length !=0){
-            // const newTicket = await ticketModel.create({amount:totalAmount})
-            // return newTicket
-            const result = totalAmount
-            return result
-        }
+        // let totalAmount = 0;
+        // const productsToPurchase = [];
+        // const productsNotPurchase = []
+        // for (const item of cart.products) {
+        //     const product = item.product;
+        //     if(product.stock>=item.quantity){
+        //         product.stock -= item.quantity
+        //         totalAmount += item.quantity * product.price;
+        //         productsToPurchase.push(product);
+        //         product.save()
+        //     }else{
+        //         productsNotPurchase.push({product:product._id,quantity:item.quantity})
+        //     }
+        // }
+        // console.log("Productos comprados:",productsToPurchase)
+        // console.log("Productos no comprados",productsNotPurchase)
+        // await this.cartsModel.updateOne({ _id: cid }, { $set: { products: productsNotPurchase } })
+        // if(productsToPurchase.length !=0){
+        //     // const newTicket = await ticketModel.create({amount:totalAmount})
+        //     // return newTicket
+        //     const result = totalAmount
+        //     return result
+        // }
     }
 }
 

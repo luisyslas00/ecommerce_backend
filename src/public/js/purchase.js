@@ -14,10 +14,43 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (contentType && contentType.indexOf("application/json") !== -1) {
                     const result = await response.json();
                     if (response.ok) {
-                        alert('Compra completada con éxito')
-                        setTimeout(() => {
-                            window.location.href = '/products';
-                        }, 1000);
+                        // Construir listas de productos comprados y no comprados
+                        console.log(result)
+                        const products = result.ticket.products
+                        const productsPurchased = []
+                        const productsNotPurchased = []
+                        for (const element of products) {
+                            productsPurchased.push({title:element.product.title,price:element.product.price,quantity:element.quantity})
+                        }
+                        const purchasedList = productsPurchased.map(item => 
+                            `<li>${item.title} - $${item.price} (Cantidad: ${item.quantity})</li>`
+                        ).join('');
+                        if(result.productsNotPurchased!==0){
+                            const productsNot = result.productsNotPurchased
+                            for (const element of productsNot) {
+                                productsNotPurchased.push({title:element.product.title,price:element.product.price,quantity:element.quantity})
+                            }
+                        }
+                        const notPurchasedList = productsNotPurchased.map(item => 
+                            `<li>${item.title} - $${item.price} (Cantidad: ${item.quantity})</li>`
+                        ).join('');
+
+                        // Mostrar el modal de SweetAlert con los productos comprados y no comprados
+                        Swal.fire({
+                            title: 'Compra completada',
+                            html: `
+                                <h3>Productos comprados:</h3>
+                                <ul>${purchasedList}</ul>
+                                <h3>Los siguientes productos superan el stock disponible, por favor eliminarlos:</h3>
+                                <ul>${notPurchasedList}</ul>
+                                <p>Total de la compra: $${result.ticket.amount}</p>
+                            `,
+                            icon: 'success',
+                            confirmButtonText: 'Aceptar'
+                        }).then((result) => {
+                            if (result.isConfirmed){
+                                location.reload()
+                            }});
                     } else {
                         console.error('Error al completar la compra:', result);
                         alert('Error al completar la compra');
