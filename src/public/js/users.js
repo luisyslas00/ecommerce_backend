@@ -29,7 +29,16 @@ const eliminarButton = document.getElementById('btn-eliminar');
             })
         })
         .catch(error => {
-            alert('Ocurrió un error al intentar eliminar usuarios inactivos.');
+            Toastify({
+                text: 'Ocurrió un error al eliminar usuarios!',
+                duration: 1000,
+                newWindow: true,
+                gravity: "top", 
+                position: "right",
+                style: {
+                  background: "red",
+                }
+            }).showToast();
         });
     });
 

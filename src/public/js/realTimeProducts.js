@@ -26,17 +26,31 @@ async function uploadImage(){
             body: formData
         });
         const result = await response.json();
-        console.log(result)
         if (response.ok) {
-            console.log('Documents uploaded successfully');
-            console.log(result.result[0].reference)
             return result.result[0].reference
         } else {
-            alert(`Failed to upload documents: ${result.message}`);
-            // Puedes manejar errores aquí
+            Toastify({
+                text: 'Error al subir el archivo!',
+                duration: 1000,
+                newWindow: true,
+                gravity: "top", 
+                position: "right",
+                style: {
+                  background: "red",
+                }
+            }).showToast();
         }
     } catch (error) {
-        alert('Error uploading documents');
+        Toastify({
+            text: 'Error al subir el archivo!',
+            duration: 1000,
+            newWindow: true,
+            gravity: "top", 
+            position: "right",
+            style: {
+              background: "red",
+            }
+        }).showToast();
         console.error('Error:', error);
     }
 }

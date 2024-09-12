@@ -39,11 +39,7 @@ app.use(express.static(__dirname+'/public'))
 
 //Cookie Parser
 app.use(cookieParser())
-// app.use(session({
-//     secret:'s3cr3t0Y',
-//     resave:true,
-//     saveUninitialized:true
-// }))
+
 app.use(addLogger)
 //Session con MONGODB
 app.use(session({

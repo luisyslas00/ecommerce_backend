@@ -1,7 +1,6 @@
 const { Router } = require('express')
 const { cartController } = require('../../controller/carts.controller.js')
 const { auth } = require('../../middleware/auth.middleware.js')
-const { checkAuth } = require('../../middleware/checkAuthtoken.middleware.js')
 const { checkAuthtoCart } = require('../../middleware/checkAuthtoCart.middleware.js')
 const { extractUserInfo } = require('../../middleware/extractUserInfo.middleware.js')
 const {createCart,getCart,addProduct,deleteProduct,updateCart,updateQuantity,deleteProducts,endPurchase} = new cartController()

@@ -5,9 +5,7 @@ const CartDaoMongo = require('../dao/MONGO/cartDao.mongo.js')
 const MessageDaoMongo = require('../dao/MONGO/messageDao.mongo.js')
 const jwt = require('jsonwebtoken')
 const { objectConfig } = require('../config/config.js')
-const { UserDtoDB } = require('../dtos/userDB.dto.js')
 const { auth } = require('../middleware/auth.middleware.js')
-const { checkAuth } = require('../middleware/checkAuthtoken.middleware.js')
 const { extractUserInfo } = require('../middleware/extractUserInfo.middleware.js')
 const { checkNotAuthenticated } = require('../middleware/verifyLogin.middleware.js')
 const {private_key} = objectConfig
@@ -120,7 +118,6 @@ router.get('/realtimeproducts',auth(["admin","premium"]),extractUserInfo,async(r
         let userDb = req.user?.fullname || req.user?.first_name
         let cartDB = req.user?.cartID
         let userID = req.user?._id
-        console.log(userID)
         let userEmail = req.user?.email
         res.render('realTimeProducts',{
             styles:'styles.css',
@@ -172,7 +169,6 @@ router.get('/profile',auth(["admin","premium","user"]),extractUserInfo,async(req
     let role = req.user?.role
     const profileDocument = req.user?.documents?.find(doc => doc.name === 'profile');
     let imageProfile
-    console.log(req.user)
     if(profileDocument){
         imageProfile = profileDocument.reference
     }

@@ -57,7 +57,16 @@ formularioChat.addEventListener('submit',async(e)=>{
                     actualizarMensajes(data)
                 })
             }else{
-                console.log('No se pudo enviar el mensaje')
+                Toastify({
+                    text: 'No se pudo enviar el mensaje',
+                    duration: 1000,
+                    newWindow: true,
+                    gravity: "top", 
+                    position: "right",
+                    style: {
+                      background: "red",
+                    }
+                }).showToast();
             }
         }catch (error) {
             console.error('Error:', error);

@@ -28,24 +28,38 @@ if(document.getElementById('formulario')){
                                 body: formData
                             });
                 if (response.ok) {
-                const result = await response.json();
-                if (result.status === "success") {
-                    setTimeout(() => {
-                        window.location.href = '/profile';
-                    }, 1000);
-                }
-                // Aquí puedes manejar la respuesta exitosa
+                    const result = await response.json();
+                    if (result.status === "success") {
+                        setTimeout(() => {
+                            window.location.href = '/profile';
+                        }, 1000);
+                    }
                 } else {
                     console.error('Error en la respuesta:', response.statusText);
-                    // Aquí puedes manejar el error en la respuesta
                 }
-                // Puedes agregar lógica para manejar una respuesta exitosa
             } else {
-                alert(`Failed to upload documents: ${result.message}`);
-                // Puedes manejar errores aquí
+                Toastify({
+                    text: 'Error al subir los archivos',
+                    duration: 1000,
+                    newWindow: true,
+                    gravity: "top", 
+                    position: "right",
+                    style: {
+                      background: "red",
+                    }
+                }).showToast();
             }
         } catch (error) {
-            alert('Error uploading documents');
+            Toastify({
+                text: 'Error al subir los archivos',
+                duration: 1000,
+                newWindow: true,
+                gravity: "top", 
+                position: "right",
+                style: {
+                  background: "red",
+                }
+            }).showToast();
             console.error('Error:', error);
         }
     });
@@ -62,20 +76,26 @@ if(document.getElementById('formulario-baja')){
                 body: formData
             });
             if (response.ok) {
-            const result = await response.json();
-            if (result.status === "success") {
-                
-                setTimeout(() => {
-                    window.location.href = '/profile';
-                }, 1000);
-            }
-            // Aquí puedes manejar la respuesta exitosa
+                const result = await response.json();
+                if (result.status === "success") {
+                    setTimeout(() => {
+                        window.location.href = '/profile';
+                    }, 1000);
+                }
             } else {
-            console.error('Error en la respuesta:', response.statusText);
-            // Aquí puedes manejar el error en la respuesta
+                console.error('Error en la respuesta:', response.statusText);
             }
         } catch (error) {
-            alert('Error uploading documents');
+            Toastify({
+                text: 'Error al subir los archivos',
+                duration: 1000,
+                newWindow: true,
+                gravity: "top", 
+                position: "right",
+                style: {
+                  background: "red",
+                }
+            }).showToast();
             console.error('Error:', error);
         }
     });
@@ -109,11 +129,28 @@ if(document.getElementById('formulario_profile')){
                     window.location.href = '/profile';
                 }, 2000);
             } else {
-                alert(`Failed to upload documents: ${result.message}`);
-                // Puedes manejar errores aquí
+                Toastify({
+                    text: 'Error al subir los archivos',
+                    duration: 1000,
+                    newWindow: true,
+                    gravity: "top", 
+                    position: "right",
+                    style: {
+                      background: "red",
+                    }
+                }).showToast();
             }
         } catch (error) {
-            alert('Error uploading documents');
+            Toastify({
+                text: 'Error al subir los archivos',
+                duration: 1000,
+                newWindow: true,
+                gravity: "top", 
+                position: "right",
+                style: {
+                  background: "red",
+                }
+            }).showToast();
             console.error('Error:', error);
         }
     });

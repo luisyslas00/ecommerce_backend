@@ -11,19 +11,6 @@ document.addEventListener('DOMContentLoaded', async()=>{
         });
         const result = await response.json();
         const products = result.payload
-        // const productsTecno = products.filter(product => product.category === "tecno")
-        // const productsAlmacen = products.filter(product => product.category === 'almacen')
-        // const productsMuebles = products.filter(product => product.category === 'muebles')
-        // lastFiveProducts.forEach(product => {
-        //     const containerProduct = document.createElement('div');
-        //     containerProduct.className = 'card__product';
-        //     containerProduct.innerHTML = `
-        //         <h3>${product.title}</h3>
-        //         <p>Precio: ${product.price}</p>
-        //         <p>Stock: ${product.stock}</p>
-        //     `;
-        //     container.appendChild(containerProduct); 
-        // });
         mostrarProductos('tecno',containerTecno)
         mostrarProductos('muebles',containerMuebles)
         mostrarProductos('almacen',containerAlmacen)

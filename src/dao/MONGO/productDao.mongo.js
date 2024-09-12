@@ -1,5 +1,4 @@
 const { productsModel } = require('./models/products.model.js')
-const { mongoose } = require('mongoose')
 
 class ProductDaoMongo{
     constructor(){

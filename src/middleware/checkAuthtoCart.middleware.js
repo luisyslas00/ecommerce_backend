@@ -5,11 +5,6 @@ const {private_key} = objectConfig
 
 const checkAuthtoCart = (req, res, next) => {
     const token = req.cookies["token"];
-    // console.log(token)
-    // console.log(req.session)
-    // if (!token ||!req.session.user) {
-    //     return res.status(401).send({ status: 'failed', message: 'No token provided' });
-    // }
     if(token){
         try {
             const decoded = jwt.verify(token, private_key)

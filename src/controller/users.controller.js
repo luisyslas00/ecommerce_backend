@@ -244,9 +244,7 @@ class userController {
                     return this.userService.deleteUser({ _id: user._id });
                 }
             });
-    
             await Promise.all(deletePromises);
-    
             res.status(200).json({ message: `Se ha/n eliminado ${inactiveUsers.length} usuario/s inactivo/s y se le/s ha enviado un correo de notificación.` });
         } catch (error) {
             res.status(500).json({ message: 'Error interno del servidor.' });

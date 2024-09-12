@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
                         duration: 1000,
                         newWindow: true,
                         gravity: "top", 
-                        position: "bottom",
+                        position: "right",
                         style: {
                           background: "red",
                         }
@@ -58,7 +58,16 @@ document.addEventListener('DOMContentLoaded', ()=>{
     }else{
         buttons.forEach(button => {
             button.addEventListener('click', async () => {
-                alert("Debes iniciar sesión")
+                Toastify({
+                    text: 'Debes iniciar sesión!',
+                    duration: 1000,
+                    newWindow: true,
+                    gravity: "top", 
+                    position: "right",
+                    style: {
+                      background: "red",
+                    }
+                }).showToast();
             })
         })
     }

@@ -7,7 +7,6 @@ const { extractUserInfo } = require('../../middleware/extractUserInfo.middleware
 const { userService } = require('../../service/index.js')
 const { checkAuth } = require('../../middleware/checkAuthtoken.middleware.js')
 const { uploader } = require('../../middleware/multer.middleware.js')
-const { checkFiles } = require('../../middleware/checkFiles.middleware.js')
 
 const router = Router()
 const {register,login,logout,current,resetPassword,resetPasswordPass,changeUserRole,uploadFiles} = new userController
@@ -24,10 +23,6 @@ router.get('/github',passport.authenticate('github',{scope:['user:email']}),asyn
 router.get('/githubcallback',passport.authenticate('github',{failureRedirect:'/login'}),async(req,res)=>{
     try {
         req.session.user = req.user
-        // req.session.cookie({
-        //     originalMaxAge: 60000,
-        //     httpOnly:true
-        // })
         const userFound = await userService.getUser({'email':req.session.user.email})
         userFound.last_connection = new Date()
         await userFound.save()

@@ -1,5 +1,4 @@
 const { productService } = require("../service/index.js")
-const { objectConfig } = require("../config/config.js")
 const { sendEmail } = require("../utils/sendMail.js")
 
 class productController {
@@ -40,7 +39,6 @@ class productController {
                 newProduct.owner = req.user.email
             }
             const productDB = await this.productService.addProduct(newProduct)
-            console.log(productDB)
             res.send({status:"success",payload:productDB})
         } catch (error) {
             req.logger.error("Error al agregar un producto a la BD")

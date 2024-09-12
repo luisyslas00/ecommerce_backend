@@ -5,7 +5,6 @@ const {private_key} = objectConfig
 
 const checkAuth = (req, res, next) => {
     const token = req.cookies.token;
-    console.log(!token && !req.session.user)
     if (!token && !req.session.user) {
         return res.status(401).send({ status: 'failed', message: 'No token provided' });
     }

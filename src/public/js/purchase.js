@@ -15,7 +15,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     const result = await response.json();
                     if (response.ok) {
                         // Construir listas de productos comprados y no comprados
-                        console.log(result)
                         const products = result.ticket.products
                         const productsPurchased = []
                         const productsNotPurchased = []
@@ -75,7 +74,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 } else {
                     console.error('Respuesta no es JSON:', await response.text());
-                    alert('Error: La respuesta no es JSON');
                 }
             } catch (error) {
                     console.error('Error de red al completar la compra:', error);
@@ -117,7 +115,9 @@ if(document.getElementById('btn_empty_cart')){
                   background: "green",
                 }
             }).showToast();
-            location.reload(); // Recargar la página para reflejar los cambios
+            setTimeout(() => {
+                location.reload();
+            }, 1000);
         } else {
             Toastify({
                 text: 'Error al vaciar el carrito!',
