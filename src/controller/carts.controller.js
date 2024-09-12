@@ -1,11 +1,5 @@
 const { cartService, ticketService, productService } = require("../service/index.js")
-const jwt = require('jsonwebtoken')
-const { objectConfig } = require('../config/config.js')
-const { UserDtoDB } = require('../dtos/userDB.dto.js')
 const crypto = require('crypto')
-const { ProductDto } = require("../dtos/productDto.js")
-const { cartsModel } = require("../dao/MONGO/models/carts.model.js")
-const {private_key} = objectConfig
 
 class cartController {
     constructor(){
@@ -76,7 +70,6 @@ class cartController {
         try{
             const { cid, pid } = req.params;
             const newQuantity = req.body.quantity;
-            console.log(req.body)
             const result = await this.cartService.updateQuantity(cid,pid,newQuantity)
             if(result.status==="failed") return res.send(result)
             res.send({status:"success",payload:result})
@@ -114,7 +107,7 @@ class cartController {
                     productsNotPurchase.push({product:product,quantity:item.quantity})
                 }
             }
-            await cartsModel.updateOne({ _id: cid }, { $set: { products: productsNotPurchase } })
+            await this.cartService.deleteCart(cid)
             let newTicket
             if(productsToPurchase.length !=0){
                 newTicket = await ticketService.createTicket({products:productsToPurchase,amount:totalAmount,purchaser:userEmail,code:crypto.randomUUID()})

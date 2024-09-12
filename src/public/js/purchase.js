@@ -39,21 +39,39 @@ document.addEventListener('DOMContentLoaded', () => {
                         Swal.fire({
                             title: 'Compra completada',
                             html: `
-                                <h3>Productos comprados:</h3>
-                                <ul>${purchasedList}</ul>
-                                <h3>Los siguientes productos superan el stock disponible, por favor eliminarlos:</h3>
-                                <ul>${notPurchasedList}</ul>
-                                <p>Total de la compra: $${result.ticket.amount}</p>
+                                <div class="swal__content">
+                                    <h3 class="swal__subtitle">Productos comprados:</h3>
+                                    <ul class="swal__list swal__purchased-list">${purchasedList}</ul>
+                                    <h3 class="swal__subtitle">Los siguientes productos superan el stock disponible:</h3>
+                                    <ul class="swal__list swal__not-purchased-list">${notPurchasedList}</ul>
+                                    <p class="swal__total">Total de la compra: <strong>$${result.ticket.amount}</strong></p>
+                                </div>
                             `,
                             icon: 'success',
-                            confirmButtonText: 'Aceptar'
+                            confirmButtonText: 'Aceptar',
+                            customClass: {
+                                popup: 'swal__popup',
+                                title: 'swal__title',
+                                confirmButton: 'swal__confirm-btn',
+                            }
                         }).then((result) => {
                             if (result.isConfirmed){
                                 location.reload()
                             }});
                     } else {
-                        console.error('Error al completar la compra:', result);
-                        alert('Error al completar la compra');
+                        Toastify({
+                            text: 'Error al completar la compra - PRODUCTOS DEL CARRITO SUPERAN EL STOCK DISPONIBLE!',
+                            duration: 3000,
+                            newWindow: true,
+                            gravity: "top", 
+                            position: "right",
+                            style: {
+                              background: "red",
+                            }
+                        }).showToast();
+                        setTimeout(() => {
+                            location.reload();
+                        }, 3000);
                     }
                 } else {
                     console.error('Respuesta no es JSON:', await response.text());
@@ -61,7 +79,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             } catch (error) {
                     console.error('Error de red al completar la compra:', error);
-                    alert('Error de red al completar la compra');
+                    Toastify({
+                        text: 'Error al completar la compra - PRODUCTOS DEL CARRITO SUPERAN EL STOCK DISPONIBLE!',
+                        duration: 3000,
+                        newWindow: true,
+                        gravity: "top", 
+                        position: "right",
+                        style: {
+                          background: "red",
+                        }
+                    }).showToast();
+                    setTimeout(() => {
+                        location.reload();
+                    }, 3000);
             }
         })
     }
@@ -77,10 +107,28 @@ if(document.getElementById('btn_empty_cart')){
     
         const result = await response.json();
         if (result.status === 'success') {
-            alert('Carrito vaciado');
+            Toastify({
+                text: 'Carrito vaciado!',
+                duration: 1000,
+                newWindow: true,
+                gravity: "top", 
+                position: "right",
+                style: {
+                  background: "green",
+                }
+            }).showToast();
             location.reload(); // Recargar la página para reflejar los cambios
         } else {
-            alert('Error al vaciar el carrito');
+            Toastify({
+                text: 'Error al vaciar el carrito!',
+                duration: 1000,
+                newWindow: true,
+                gravity: "top", 
+                position: "right",
+                style: {
+                  background: "red",
+                }
+            }).showToast();;
         }
     });
 }
@@ -98,10 +146,30 @@ if(document.querySelectorAll('.btn_remove')){
     
             const result = await response.json();
             if (result.status === 'success') {
-                alert('Producto eliminado del carrito');
-                location.reload();  // Recargar la página para reflejar los cambios
+                Toastify({
+                    text: 'Producto eliminado del carrito!',
+                    duration: 1000,
+                    newWindow: true,
+                    gravity: "top", 
+                    position: "right",
+                    style: {
+                      background: "green",
+                    }
+                }).showToast();
+                setTimeout(() => {
+                    location.reload();
+                }, 1000);
             } else {
-                alert('Error al eliminar el producto');
+                Toastify({
+                    text: 'Error al eliminar el producto!',
+                    duration: 1000,
+                    newWindow: true,
+                    gravity: "top", 
+                    position: "right",
+                    style: {
+                      background: "red",
+                    }
+                }).showToast();;
             }
         });
     });

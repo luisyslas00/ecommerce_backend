@@ -48,7 +48,7 @@ async function enviarFormulario(){
         price:priceProduct.value,
         code:codeProduct.value,
         stock:stockProduct.value,
-        category:categoryProduct.value
+        category:categoryProduct.value.toLowerCase()
     }
     const thumbnailDB = await uploadImage()
     newProduct.thumbnail = thumbnailDB

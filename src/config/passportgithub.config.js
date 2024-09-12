@@ -1,7 +1,6 @@
 const passport = require('passport')
 const GitHubStrategy = require('passport-github2')
 const UserDaoMongo = require('../dao/MONGO/userDao.mongo.js')
-const { createHash, isValidPassword } = require('../utils/bcrypt.js')
 const CartDaoMongo = require('../dao/MONGO/cartDao.mongo.js')
 const { objectConfig } = require('./config.js')
 const {client_id,client_secret,port} = objectConfig
