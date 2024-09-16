@@ -12,7 +12,7 @@ const initializePassportGithub = () => {
     passport.use('github', new GitHubStrategy({
         clientID:client_id,
         clientSecret:client_secret,
-        callbackURL:'http://localhost:'+port+'/api/sessions/githubcallback'
+        callbackURL:'https://ecommerce-backend-ax45.onrender.com/api/sessions/githubcallback'
     },async(accessToken,refreshToken,profile,done)=>{
         try {
             let user = await userManager.getUser({email:profile._json.email})
